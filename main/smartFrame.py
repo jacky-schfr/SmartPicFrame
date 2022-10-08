@@ -1,6 +1,9 @@
+import inspect
+
+from utils import log
 from playground.fullScreenMode import fullScreenMode
 
-hello = "hello jacky"
+if __name__ == "__main__":
+    log.d(inspect.currentframe(), "init main")
 
-print(hello)
-fullScreenMode()
+    fullScreenMode()
