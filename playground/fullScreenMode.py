@@ -7,7 +7,7 @@ from utils import log
 class fullScreenMode:
 
     def __init__(self):
-        log.d(inspect.currentframe(), "init window")
+        log.l(inspect.currentframe(), "init window")
 
         self.window = Tk(className="SmartPicFrame")
         self.window.geometry("1280x768")
