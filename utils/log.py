@@ -5,35 +5,32 @@ from types import FrameType
 from termcolor import colored
 
 
-"""
-Message Log Class
+""" Message Log Class
 
-:method l - log
-:method d - debug
-:method w - warning
-"""
+    :method l - log
+    :method d - debug
+    :method w - warning """
 
 
 def l(frame: FrameType, message):
-    frameInfoFormatted = formatFrame(frame)
-    print(getTimeStamp(), "\t", colored(formatString("log", 10), "green"), colored(frameInfoFormatted, "green"), message)
+    print(getTimeStamp(), "\t", colored(formatString("log", 10), "green"), formatString(getLink(frame), 70), message)
 
 
 def d(frame: FrameType, message):
-    frameInfoFormatted = formatFrame(frame)
-    print(getTimeStamp(), "\t", colored(formatString("debug", 10), "blue"), colored(frameInfoFormatted, "blue"), message)
+    print(getTimeStamp(), "\t", colored(formatString("debug", 10), "blue"), formatString(getLink(frame), 70), message)
 
 
 def w(frame: FrameType, message):
-    frameInfoFormatted = formatFrame(frame)
-    print(getTimeStamp(), "\t", colored(formatString("warning", 10), "yellow"), colored(frameInfoFormatted, "yellow"), message)
+    print(getTimeStamp(), "\t", colored(formatString("warning", 10), "yellow"), formatString(getLink(frame), 70), message)
 
 
-def formatFrame(frame: FrameType):
+def getLink(frame: FrameType):
     path = pathlib.PurePath(inspect.getframeinfo(frame).filename)
-    frameInfo = path.name, inspect.getframeinfo(frame).lineno
-    frameInfoFormatted = formatString(str(frameInfo), 50)
-    return frameInfoFormatted
+    line = inspect.getframeinfo(frame).lineno
+    parts = path.parts
+
+    string = f'(File "{parts[-2] + "/" + parts[-1]}", line {max(line, 1)})'
+    return string
 
 
 def formatString(name: str, lenght: int):
