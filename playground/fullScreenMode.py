@@ -15,7 +15,6 @@ class fullScreenMode:
         self.toggle_btn = Button(text="FullScreen-Mode", width=12, relief="raised", command=lambda: self.toggle(self.toggle_btn))
         self.toggle_btn.pack(pady=5)
 
-        log.w(inspect.currentframe(), "not good")
         self.window.mainloop()
 
     def toggle(self, toggle: Button):
