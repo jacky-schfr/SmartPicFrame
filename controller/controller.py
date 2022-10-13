@@ -1,4 +1,5 @@
 import inspect
+import os
 
 from model.model import Model
 from utils import log
@@ -14,6 +15,8 @@ class Controller(object):
         log.l(inspect.currentframe(), "init controller")
 
     def run(self):
-        i = 1
-        return self.model.files[i]
+        log.l(inspect.currentframe(), "run")
+
+        for img in self.model.images:
+            return img
 

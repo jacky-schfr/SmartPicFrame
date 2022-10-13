@@ -8,5 +8,3 @@ from playground.fullScreenMode import fullScreenMode
 if __name__ == "__main__":
     c = Controller()
     log.l(inspect.currentframe(), "init main")
-
-    fullScreenMode()
