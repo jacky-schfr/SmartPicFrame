@@ -11,7 +11,7 @@ class Picture(object):
 
     def readMessage(self):
         log.l(inspect.currentframe(), "readMessage")
-        if "-m:" in self.file:
-            temp = self.file.split("-m:")
+        if "_m_" in self.file:
+            temp = self.file.split("_m_")
             temp = temp[1].split(".")
             self.message = temp[0]
