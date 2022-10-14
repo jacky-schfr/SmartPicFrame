@@ -8,7 +8,8 @@ from utils import log
 
 class Model(object):
 
-    path = "/home/jacky/Bilder/"
+    #path = "/home/jacky/Bilder/"
+    path = r"C:\Users\marce\Pictures\SmartPicFrameImages"
 
     images = []
 
