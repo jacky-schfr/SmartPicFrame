@@ -1,6 +1,7 @@
 import inspect
 import os
 import shutil
+from model.picture import Picture
 
 from utils import log
 
@@ -12,7 +13,8 @@ class Model(object):
     images = []
 
     for file in os.listdir(path):
-        images.append('images/' + file)
+        img = Picture('images/' + file)
+        images.append(img)
         if os.path.exists('images/'+file):
             log.l(inspect.currentframe(), "no new image")
             continue
