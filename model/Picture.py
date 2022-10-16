@@ -1,6 +1,6 @@
 import inspect
 
-from utils import log
+from utils import Log
 
 
 class Picture(object):
@@ -10,7 +10,7 @@ class Picture(object):
         self.readMessage()
 
     def readMessage(self):
-        log.l(inspect.currentframe(), "readMessage")
+        Log.l(inspect.currentframe(), "readMessage")
         if "_m_" in self.file:
             temp = self.file.split("_m_")
             temp = temp[1].split(".")

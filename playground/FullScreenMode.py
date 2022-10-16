@@ -1,13 +1,13 @@
 import inspect
 from tkinter import *
 
-from utils import log
+from utils import Log
 
 
 class fullScreenMode:
 
     def __init__(self):
-        log.l(inspect.currentframe(), "init window")
+        Log.l(inspect.currentframe(), "init window")
 
         self.window = Tk(className="SmartPicFrame")
         self.window.geometry("1280x768")
@@ -19,12 +19,12 @@ class fullScreenMode:
 
     def toggle(self, toggle: Button):
         if toggle.config('relief')[-1] == 'sunken':
-            log.d(inspect.currentframe(), "full screen mode: False")
+            Log.d(inspect.currentframe(), "full screen mode: False")
 
             toggle.config(relief="raised")
             self.window.attributes("-fullscreen", False)
         else:
-            log.d(inspect.currentframe(), "full screen mode: True")
+            Log.d(inspect.currentframe(), "full screen mode: True")
 
             toggle.config(relief="sunken")
             self.window.attributes("-fullscreen", True)

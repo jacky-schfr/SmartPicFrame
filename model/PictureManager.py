@@ -1,15 +1,15 @@
 import inspect
 import os
 import shutil
-from model.picture import Picture
+from model.Picture import Picture
 
-from utils import log
+from utils import Log
 
 
 class Model(object):
 
-    path = "/home/jacky/Bilder/"
-    #path = r"C:\Users\marce\Pictures\SmartPicFrameImages"
+    #path = "/home/jacky/Bilder/"
+    path = r"C:\Users\marce\Pictures\SmartPicFrameImages"
 
     images = []
 
@@ -17,15 +17,12 @@ class Model(object):
         img = Picture('images/' + file)
         images.append(img)
         if os.path.exists('images/'+file):
-            log.l(inspect.currentframe(), "no new image")
+            Log.l(inspect.currentframe(), "no new image")
             continue
         else:
             # use Json file instead of list to gave propper data. ???
             # or picture/ image class
             shutil.copy(os.path.join(path, file), 'images')
-            log.l(inspect.currentframe(), "new image added")
+            Log.l(inspect.currentframe(), "new image added")
 
-    print(images)
-
-
-
+    Log.d(inspect.currentframe(), "images: " + str(images))
