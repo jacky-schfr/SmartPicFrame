@@ -68,7 +68,7 @@ class Controller(object):
         Log.l(inspect.currentframe(), "setDevMode: " + str(isDevMode))
         self.isDevMode = not self.isDevMode
         if isDevMode:
-            self.view.dev.frame.place_configure(x=0 + + self.view.dev.offset / 2)
+            self.view.dev.frame.place_configure(x=0 + self.view.dev.offset / 2)
         else:
             self.view.dev.frame.place_configure(x=self.fc.width)
 
