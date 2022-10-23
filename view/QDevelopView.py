@@ -45,9 +45,9 @@ class QDevelopView(QWidget):
         self.btnClose = QPushButton(frame)
         self.btnClose.setText("Schließen")
 
-        self.setPos()
+        self.setPosition()
 
-    def setPos(self):
+    def setPosition(self):
         self.title.move(int(self.fc.width / 2 - self.title.width() / 2), 100)
         self.btnFullScreen.move(20, self.fc.height - self.offset - 200)
         self.btnClose.move(20, self.fc.height - self.offset - 150)

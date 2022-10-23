@@ -1,11 +1,12 @@
 import inspect
 
-from PIL import ImageTk, Image, ImageOps
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 
 from model.FrameConfig import FrameConfig
 from model.PictureManager import Model
 from utils import Log
-from view.SmartFrameView import SmartFrameView
+from view.QSmartFrameView import QSmartFrameView
 
 
 class Controller(object):
@@ -17,27 +18,21 @@ class Controller(object):
         self.isDevMode = False
 
         self.model = Model()
-        self.view = SmartFrameView()
+        self.view = QSmartFrameView()
 
         '''
         SmartPicFrame screen control
         '''
-        self.view.btn.bind("<Button>", self.updateImage)
-        self.view.btnDev.bind("<Button>", lambda event, isDevMode=True: self.setDevMode(isDevMode))
+        self.view.btn.clicked.connect(self.updateImage)
+        self.view.btnDev.clicked.connect(self.view.showDevMode)
 
-        '''
-        Develop screen control
-        '''
-        self.view.dev.btnFullScreen.bind("<Button>", self.setFullScreen)
-        self.view.dev.btnClose.bind("<Button>", lambda event, isDevMode=False: self.setDevMode(isDevMode))
+        self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
+        self.view.dev.btnClose.clicked.connect(self.view.hideDevMode)
 
         '''
         Controller logic
         '''
         self.updateImage(self)
-        self.setDevMode(False)
-
-        self.view.mainloop()
 
     def updateImage(self, event):
         Log.l(inspect.currentframe(), "updateImage")
@@ -56,33 +51,26 @@ class Controller(object):
 
     def setImage(self, param):
         Log.l(inspect.currentframe(), "setImage")
-        temp = Image.open(param)
-        temp = ImageOps.contain(temp, (self.fc.width, self.fc.height))
-        img = ImageTk.PhotoImage(temp)
-        self.view.label.configure(image=img)
-        self.view.label.image = img
+        resizedPix = QPixmap(param).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
+        self.view.image.setPixmap(resizedPix)
         message = self.model.images[self.counter].message
-        self.view.msg.config(text=message)
-
-    def setDevMode(self, isDevMode):
-        Log.l(inspect.currentframe(), "setDevMode: " + str(isDevMode))
-        self.isDevMode = not self.isDevMode
-        if isDevMode:
-            self.view.dev.frame.place_configure(x=0 + self.view.dev.offset / 2)
+        if message == "":
+            self.view.msg.hide()
         else:
-            self.view.dev.frame.place_configure(x=self.fc.width)
+            self.view.msg.show()
+            self.view.msg.setText(message)
+            self.view.msg.adjustSize()
 
-    def setFullScreen(self, event):
+    def toggleFullScreen(self, event):
         self.fc.isFullScreen = not self.fc.isFullScreen
         if self.fc.isFullScreen:
-            self.view.attributes("-fullscreen", True)
-            self.fc.width = self.view.winfo_width()
-            self.fc.height = self.view.winfo_height()
+            self.view.showFullScreen()
+            self.fc.width = self.view.width()
+            self.fc.height = self.view.height()
         else:
-            self.view.attributes("-fullscreen", False)
+            self.view.showNormal()
             self.fc.width = 1280
             self.fc.height = 720
 
-        # Update UI
-        self.view.update()
-        self.view.dev.update()
+        self.view.dev.setPosition()
+        self.view.setPosition()
