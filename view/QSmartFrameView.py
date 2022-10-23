@@ -14,7 +14,8 @@ class QSmartFrameView(QMainWindow):
 
         self.setWindowTitle("Gallery")
         self.setGeometry(0, 0, self.fc.width, self.fc.height)
-        self.setStyleSheet("background-color:'BLACK';")
+        self.setObjectName("main")
+        self.setStyleSheet("QWidget#main {background-color:'BLACK';}")
 
         self.image = QLabel(self)
         self.image.resize(self.fc.width, self.fc.height,)
@@ -26,11 +27,9 @@ class QSmartFrameView(QMainWindow):
         self.msg.setStyleSheet("border: 4px solid white; border-radius: 4px; color:'WHITE';")
 
         self.btn = QPushButton(self)
-        self.btn.setStyleSheet("background-color:'WHITE';")
         self.btn.setText("Nächstes Bild")
 
         self.btnDev = QPushButton(self)
-        self.btnDev.setStyleSheet("background-color:'WHITE';")
         self.btnDev.setText("Dev Mode")
 
         self.dev = QDevelopView()
