@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import *
 from model.FrameConfig import FrameConfig
 from view.QDevelopView import QDevelopView
@@ -25,13 +25,32 @@ class QSmartFrameView(QMainWindow):
 
         self.msg = QLabel("", self)
         self.msg.setStyleSheet("border: 4px solid white; border-radius: 4px; color:'WHITE';")
-
-        self.btn = QPushButton(self)
-        self.btn.setText("Nächstes Bild")
+        '''
+        Initialize Buttons
+        '''
 
         self.btnDev = QPushButton(self)
         self.btnDev.setText("Dev Mode")
 
+        self.arrowBtn = QPushButton(self)
+        self.arrowBtn.setObjectName("arrowBtn")
+        self.arrowBtn.setIconSize(QSize(150, 150))
+        self.arrowBtn.setIcon(QIcon('graphics/arrowButtonTmp.png'))
+        self.arrowBtn.adjustSize()
+        self.arrowBtn.setFlat(True)
+        self.arrowBtn.setStyleSheet("QPushButton#arrowBtn {background-color: transparent}")
+
+        self.arrowBtnL = QPushButton(self)
+        self.arrowBtnL.setObjectName("arrowBtn")
+        self.arrowBtnL.setIconSize(QSize(150, 150))
+        self.arrowBtnL.setIcon(QIcon('graphics/arrowButtonTmpL.png'))
+        self.arrowBtnL.adjustSize()
+        self.arrowBtnL.setFlat(True)
+        self.arrowBtnL.setStyleSheet("QPushButton#arrowBtn {background-color: transparent}")
+
+        '''
+        QDevelopView
+        '''
         self.dev = QDevelopView()
         self.setCentralWidget(self.dev)
         self.dev.hide()
@@ -44,8 +63,9 @@ class QSmartFrameView(QMainWindow):
         self.setGeometry(0, 0, self.fc.width, self.fc.height)
 
         self.msg.move(self.fc.width - 200, self.fc.height - 70)
-        self.btn.move(20, self.fc.height - 70)
         self.btnDev.move(130, self.fc.height - 70)
+        self.arrowBtn.move(self.fc.width - 200, int(self.fc.height/2)-50)
+        self.arrowBtnL.move(100, int(self.fc.height/2)-50)
 
     def showDevMode(self):
         self.dev.show()

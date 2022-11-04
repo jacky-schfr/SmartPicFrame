@@ -23,7 +23,8 @@ class Controller(object):
         '''
         SmartPicFrame screen control
         '''
-        self.view.btn.clicked.connect(self.updateImage)
+        self.view.arrowBtn.clicked.connect(self.forwardImage)
+        self.view.arrowBtnL.clicked.connect(self.backwardImage)
         self.view.btnDev.clicked.connect(self.view.showDevMode)
 
         self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
@@ -32,15 +33,16 @@ class Controller(object):
         '''
         Controller logic
         '''
-        self.updateImage(self)
+        self.forwardImage(self)
 
-    def updateImage(self, event):
+    def forwardImage(self, event):
         Log.l(inspect.currentframe(), "updateImage")
+        self.counter = self.model.getCounterValue(self.counter, "r")
         self.setImage(self.getImage())
-        if self.counter < len(self.model.images) - 1:
-            self.counter += 1
-        else:
-            self.counter = 0
+
+    def backwardImage(self, event):
+        self.counter = self.model.getCounterValue(self.counter, "l")
+        self.setImage(self.getImage())
 
     def getImage(self):
         Log.l(inspect.currentframe(), "getImage")
