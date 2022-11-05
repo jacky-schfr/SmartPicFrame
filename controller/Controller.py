@@ -5,6 +5,9 @@ from PyQt5.QtGui import QPixmap
 
 from model.FrameConfig import FrameConfig
 from model.PictureManager import Model
+from model.time_manager.PictureTimeManager import PictureTimeManager
+from model.time_manager.TimeState import TimeState
+from model.time_manager.TouchDurationTimeManager import TouchDurationTimeManager
 from utils import Log
 from view.QSmartFrameView import QSmartFrameView
 
@@ -21,21 +24,34 @@ class Controller(object):
         self.view = QSmartFrameView()
 
         '''
+        Timer
+        '''
+        self.touchTimer = TouchDurationTimeManager(self.touchDurationCallback)
+        self.pictureTimer = PictureTimeManager(self.pictureLoopCallback)
+        self.pictureTimer.startLoopTimer(3000)
+
+        '''
         SmartPicFrame screen control
         '''
-        self.view.arrowBtn.clicked.connect(self.forwardImage)
+        self.view.arrowBtn.clicked.connect(self.nextPicture)
         self.view.arrowBtnL.clicked.connect(self.backwardImage)
         self.view.btnDev.clicked.connect(self.view.showDevMode)
 
         self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
         self.view.dev.btnClose.clicked.connect(self.view.hideDevMode)
 
+        self.view.btnTouch.clicked.connect(self.startTimer)
+
         '''
         Controller logic
         '''
-        self.forwardImage(self)
+        self.nextPicture(self)
 
-    def forwardImage(self, event):
+    def nextPicture(self, event):
+        Log.l(inspect.currentframe(), "nextPicture")
+        self.forwardImage()
+
+    def forwardImage(self):
         Log.l(inspect.currentframe(), "updateImage")
         self.counter = self.model.getCounterValue(self.counter, "r")
         self.setImage(self.getImage())
@@ -76,3 +92,18 @@ class Controller(object):
 
         self.view.dev.setPosition()
         self.view.setPosition()
+
+    def pictureLoopCallback(self):
+        Log.d(inspect.currentframe(), "pictureLoopCallback")
+        self.forwardImage()
+
+    def touchDurationCallback(self):
+        Log.d(inspect.currentframe(), "touchDurationCallback")
+        match self.touchTimer.state:
+            case TimeState.started:
+                self.view.touchLabel.show()
+            case TimeState.stopped:
+                self.view.touchLabel.hide()
+
+    def startTimer(self, event):
+        self.touchTimer.startTouchTimer(3000)

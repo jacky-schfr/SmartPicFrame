@@ -25,10 +25,10 @@ class QSmartFrameView(QMainWindow):
 
         self.msg = QLabel("", self)
         self.msg.setStyleSheet("border: 4px solid white; border-radius: 4px; color:'WHITE';")
+
         '''
         Initialize Buttons
         '''
-
         self.btnDev = QPushButton(self)
         self.btnDev.setText("Dev Mode")
 
@@ -49,11 +49,22 @@ class QSmartFrameView(QMainWindow):
         self.arrowBtnL.setStyleSheet("QPushButton#arrowBtn {background-color: transparent}")
 
         '''
+        Touch Functions
+        '''
+        self.touchLabel = QLabel("This is a test label", self)
+        self.touchLabel.setStyleSheet("border: 4px solid white; border-radius: 4px; color:'WHITE';")
+        self.touchLabel.adjustSize()
+        self.touchLabel.hide()
+
+        self.btnTouch = QPushButton(self)
+        self.btnTouch.setText("Touch on screen")
+        self.btnTouch.adjustSize()
+
+        '''
         QDevelopView
         '''
-        self.dev = QDevelopView()
-        self.setCentralWidget(self.dev)
-        self.dev.hide()
+        self.dev = QDevelopView(self)
+        self.dev.frame.hide()
 
         self.setPosition()
 
@@ -67,9 +78,12 @@ class QSmartFrameView(QMainWindow):
         self.arrowBtn.move(self.fc.width - 200, int(self.fc.height/2)-50)
         self.arrowBtnL.move(100, int(self.fc.height/2)-50)
 
+        self.touchLabel.move(int(self.fc.width / 2 - self.touchLabel.width() / 2), int(self.fc.height / 2 - self.touchLabel.height() / 2))
+        self.btnTouch.move(130, self.fc.height - 120)
+
     def showDevMode(self):
-        self.dev.show()
+        self.dev.frame.show()
 
     def hideDevMode(self):
-        self.dev.hide()
+        self.dev.frame.hide()
 

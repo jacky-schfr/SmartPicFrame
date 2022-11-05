@@ -8,8 +8,8 @@ from model.FrameConfig import FrameConfig
 from utils import Log
 
 
-class QDevelopView(QWidget):
-    def __init__(self):
+class QDevelopView:
+    def __init__(self, parentSelf):
         super().__init__()
         Log.l(inspect.currentframe(), "init develop screen")
 
@@ -17,21 +17,11 @@ class QDevelopView(QWidget):
 
         self.offset = 50
 
-        '''
-        set main frame in QVBoxLayout
-        '''
-        layout = QVBoxLayout()
-        layout.setContentsMargins(self.offset, self.offset, self.offset, self.offset)
-        self.setLayout(layout)
-        frame = QFrame(self)
-        frame.setObjectName("mainFrame")
-        frame.setStyleSheet('QWidget#mainFrame { border: 1px solid black; background-color: rgba(0, 0, 0, 220) }')
-        layout.addWidget(frame)
+        self.frame = QFrame(parentSelf)
+        self.frame.setObjectName("mainFrame")
+        self.frame.setStyleSheet('QWidget#mainFrame { border: 1px solid grey; background-color: rgba(0, 0, 0, 220) }')
 
-        '''
-        set content in screen
-        '''
-        self.title = QLabel(frame)
+        self.title = QLabel(self.frame)
         self.title.setText("Develop")
         color_effect = QGraphicsColorizeEffect()
         color_effect.setColor(Qt.white)
@@ -39,15 +29,16 @@ class QDevelopView(QWidget):
         self.title.setFont(QFont('Arial', 24))
         self.title.setFixedSize(250, 50)
 
-        self.btnFullScreen = QPushButton(frame)
+        self.btnFullScreen = QPushButton(self.frame)
         self.btnFullScreen.setText("Vollbild an/aus")
 
-        self.btnClose = QPushButton(frame)
+        self.btnClose = QPushButton(self.frame)
         self.btnClose.setText("Schließen")
 
         self.setPosition()
 
     def setPosition(self):
+        self.frame.setGeometry(self.offset, self.offset, self.fc.width - self.offset * 2, self.fc.height - self.offset * 2)
         self.title.move(int(self.fc.width / 2 - self.title.width() / 2), 100)
         self.btnFullScreen.move(20, self.fc.height - self.offset - 200)
         self.btnClose.move(20, self.fc.height - self.offset - 150)
