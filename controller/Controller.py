@@ -28,7 +28,7 @@ class Controller(object):
         '''
         self.touchTimer = TouchDurationTimeManager(self.touchDurationCallback)
         self.pictureTimer = PictureTimeManager(self.pictureLoopCallback)
-        self.pictureTimer.startLoopTimer(3000)
+        self.startPictureTimer()
 
         '''
         SmartPicFrame screen control
@@ -38,9 +38,9 @@ class Controller(object):
         self.view.btnDev.clicked.connect(self.view.showDevMode)
 
         self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
-        self.view.dev.btnClose.clicked.connect(self.view.hideDevMode)
+        self.view.dev.btnClose.clicked.connect(self.updateSettings)
 
-        self.view.btnTouch.clicked.connect(self.startTimer)
+        self.view.btnTouch.clicked.connect(self.startTouchTimer)
 
         '''
         Controller logic
@@ -105,5 +105,13 @@ class Controller(object):
             case TimeState.stopped:
                 self.view.touchLabel.hide()
 
-    def startTimer(self, event):
-        self.touchTimer.startTouchTimer(3000)
+    def startTouchTimer(self, event):
+        self.touchTimer.startTouchTimer(self.fc.touchDurationTime)
+
+    def startPictureTimer(self):
+        self.pictureTimer.startLoopTimer(self.fc.pictureTime)
+
+    def updateSettings(self, event):
+        self.view.hideDevMode()
+        self.fc.updateConfig(pictureTime=self.view.dev.getPictureTime())
+        self.startPictureTimer()

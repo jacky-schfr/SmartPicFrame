@@ -17,3 +17,12 @@ class FrameConfig(object):
         self.isFullScreen = False
         self.width = 1280
         self.height = 720
+
+        '''
+        Timer configurations
+        '''
+        self.touchDurationTime = 3
+        self.pictureTime = 3
+
+    def updateConfig(self, pictureTime):
+        self.pictureTime = pictureTime

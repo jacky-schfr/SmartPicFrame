@@ -82,6 +82,7 @@ class QSmartFrameView(QMainWindow):
         self.btnTouch.move(130, self.fc.height - 120)
 
     def showDevMode(self):
+        self.dev.setValues()
         self.dev.frame.show()
 
     def hideDevMode(self):

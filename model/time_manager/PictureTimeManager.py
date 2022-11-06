@@ -16,7 +16,7 @@ class PictureTimeManager:
             self.__timer.deleteLater()
         self.__timer = QTimer()
         self.__timer.timeout.connect(lambda: self.callback())
-        self.__timer.start(duration)
+        self.__timer.start(duration * 1000)
 
     def quitLoopTimer(self):
         Log.d(inspect.currentframe(), "stop loop timer")

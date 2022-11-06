@@ -2,11 +2,16 @@ import inspect
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QFrame, QWidget, QVBoxLayout, QLabel, QPushButton, QGraphicsColorizeEffect, QHBoxLayout, \
-    QLineEdit
+from PyQt5.QtWidgets import QFrame, QLabel, QPushButton, QGraphicsColorizeEffect, QLineEdit
 
 from model.FrameConfig import FrameConfig
 from utils import Log
+
+
+def getColorEffect():
+    color_effect = QGraphicsColorizeEffect()
+    color_effect.setColor(Qt.white)
+    return color_effect
 
 
 class QDevelopView:
@@ -27,38 +32,40 @@ class QDevelopView:
 
         self.title = QLabel(self.frame)
         self.title.setText("Einstellungen")
-        self.title.setGraphicsEffect(self.getColorEffect())
+        self.title.setGraphicsEffect(getColorEffect())
         self.title.setFont(QFont('Arial', 24))
         self.title.setFixedSize(250, 50)
 
         self.pathName = QLabel(self.frame)
         self.pathName.setText("Verzeichnis (Bilder):")
-        self.pathName.setGraphicsEffect(self.getColorEffect())
+        self.pathName.setGraphicsEffect(getColorEffect())
         self.pathName.setFont(QFont('Arial', 12))
         self.pathLine = QLineEdit(self.frame)
         self.pathLine.resize(500, 24)
+        self.pathLine.setFont(QFont('Arial', 10))
 
         self.durationName = QLabel(self.frame)
         self.durationName.setText("Anzeigedauer:")
-        self.durationName.setGraphicsEffect(self.getColorEffect())
+        self.durationName.setGraphicsEffect(getColorEffect())
         self.durationName.setFont(QFont('Arial', 12))
         self.durationLine = QLineEdit(self.frame)
         self.durationLine.resize(200, 24)
+        self.durationLine.setFont(QFont('Arial', 10))
         self.durationUnit = QLabel(self.frame)
         self.durationUnit.setText("in Sekunden")
-        self.durationUnit.setGraphicsEffect(self.getColorEffect())
+        self.durationUnit.setGraphicsEffect(getColorEffect())
         self.durationUnit.setFont(QFont('Arial', 12))
 
         self.seminoName = QLabel(self.frame)
         self.seminoName.setText("Semino-Modus:")
-        self.seminoName.setGraphicsEffect(self.getColorEffect())
+        self.seminoName.setGraphicsEffect(getColorEffect())
         self.seminoName.setFont(QFont('Arial', 12))
         self.btnSemino = QPushButton(self.frame)
         self.btnSemino.setText("an/aus")
 
         self.fullScreenName = QLabel(self.frame)
         self.fullScreenName.setText("Vollbild:")
-        self.fullScreenName.setGraphicsEffect(self.getColorEffect())
+        self.fullScreenName.setGraphicsEffect(getColorEffect())
         self.fullScreenName.setFont(QFont('Arial', 12))
         self.btnFullScreen = QPushButton(self.frame)
         self.btnFullScreen.setText("an/aus")
@@ -67,10 +74,11 @@ class QDevelopView:
         self.btnClose.setText("Schließen")
 
         self.setPosition()
+        self.setValues()
 
     def setPosition(self):
-        self.guideLine1 = int(self.getRelativePos(30))
-        self.guideLine2 = int(self.getRelativePos(80))
+        self.guideLine1 = int(self.__getRelativePos(30))
+        self.guideLine2 = int(self.__getRelativePos(80))
 
         self.frame.setGeometry(self.offset, self.offset, self.fc.width - self.offset * 2, self.fc.height - self.offset * 2)
 
@@ -91,10 +99,11 @@ class QDevelopView:
 
         self.btnClose.move(int(self.fc.width / 2 - self.btnClose.width() / 2 - self.offset), self.guideLine2)
 
-    def getColorEffect(self):
-        color_effect = QGraphicsColorizeEffect()
-        color_effect.setColor(Qt.white)
-        return color_effect
+    def setValues(self):
+        self.durationLine.setText(str(self.fc.pictureTime))
 
-    def getRelativePos(self, percent):
+    def getPictureTime(self):
+        return int(self.durationLine.text())
+
+    def __getRelativePos(self, percent):
         return (self.fc.height - self.offset * 2) / 100 * percent

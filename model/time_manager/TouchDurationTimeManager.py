@@ -22,7 +22,7 @@ class TouchDurationTimeManager:
         self.__timer = QTimer()
         self.__timer.timeout.connect(lambda: self.quitTouchTimer())
         self.__timer.setSingleShot(True)
-        self.__timer.start(time)
+        self.__timer.start(time * 1000)
 
     def quitTouchTimer(self):
         Log.d(inspect.currentframe(), "stop touch timer")
