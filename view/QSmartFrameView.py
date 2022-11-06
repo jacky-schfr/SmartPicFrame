@@ -13,7 +13,6 @@ class QSmartFrameView(QMainWindow):
         self.fc = FrameConfig()
 
         self.setWindowTitle("Gallery")
-        self.setGeometry(0, 0, self.fc.width, self.fc.height)
         self.setObjectName("main")
         self.setStyleSheet("QWidget#main {background-color:'BLACK';}")
 
@@ -72,6 +71,11 @@ class QSmartFrameView(QMainWindow):
 
     def setPosition(self):
         self.setGeometry(0, 0, self.fc.width, self.fc.height)
+
+        qtRectangle = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
 
         self.msg.move(self.fc.width - 200, self.fc.height - 70)
         self.btnDev.move(130, self.fc.height - 70)

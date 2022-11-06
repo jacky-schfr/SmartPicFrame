@@ -86,6 +86,7 @@ class Controller(object):
             self.fc.width = self.view.width()
             self.fc.height = self.view.height()
         else:
+            self.view.showMaximized()
             self.view.showNormal()
             self.fc.width = 1280
             self.fc.height = 720
