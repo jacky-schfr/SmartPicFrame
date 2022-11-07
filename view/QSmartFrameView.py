@@ -1,6 +1,8 @@
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import *
+from PyQt5.uic.properties import QtCore
+
 from model.FrameConfig import FrameConfig
 from view.QDevelopView import QDevelopView
 
@@ -30,6 +32,23 @@ class QSmartFrameView(QMainWindow):
         self.btnDev = QPushButton(self)
         self.btnDev.setText("Dev Mode")
 
+        self.pauseBtn = QPushButton(self)
+        self.pauseBtn.setObjectName("arrowBtn")
+        self.pauseBtn.setIconSize(QSize(150, 150))
+        self.pauseBtn.setIcon(QIcon('graphics/pauseBtn.png'))
+        self.pauseBtn.adjustSize()
+        self.pauseBtn.setFlat(True)
+        self.pauseBtn.setStyleSheet("QPushButton#arrowBtn {background-color: transparent}")
+
+        self.playBtn = QPushButton(self)
+        self.playBtn.setObjectName("arrowBtn")
+        self.playBtn.setIconSize(QSize(150, 150))
+        self.playBtn.setIcon(QIcon('graphics/playBtn.png'))
+        self.playBtn.adjustSize()
+        self.playBtn.setFlat(True)
+        self.playBtn.setStyleSheet("QPushButton#arrowBtn {background-color: transparent}")
+        self.playBtn.hide()
+
         self.arrowBtn = QPushButton(self)
         self.arrowBtn.setObjectName("arrowBtn")
         self.arrowBtn.setIconSize(QSize(150, 150))
@@ -49,11 +68,6 @@ class QSmartFrameView(QMainWindow):
         '''
         Touch Functions
         '''
-        self.touchLabel = QLabel("This is a test label", self)
-        self.touchLabel.setStyleSheet("border: 4px solid white; border-radius: 4px; color:'WHITE';")
-        self.touchLabel.adjustSize()
-        self.touchLabel.hide()
-
         self.btnTouch = QPushButton(self)
         self.btnTouch.setText("Touch on screen")
         self.btnTouch.adjustSize()
@@ -80,10 +94,11 @@ class QSmartFrameView(QMainWindow):
 
         self.msg.move(self.fc.width - 200, self.fc.height - 70)
         self.btnDev.move(130, self.fc.height - 70)
-        self.arrowBtn.move(self.fc.width - 200, int(self.fc.height/2)-50)
-        self.arrowBtnL.move(100, int(self.fc.height/2)-50)
+        self.arrowBtn.move(self.fc.width - 200, int(self.fc.height/2)-100)
+        self.arrowBtnL.move(50, int(self.fc.height/2)-100)
+        self.pauseBtn.move(int(self.fc.width/2)-100, int(self.fc.height/2)-100)
+        self.playBtn.move(int(self.fc.width / 2) - 100, int(self.fc.height / 2) - 100)
 
-        self.touchLabel.move(int(self.fc.width / 2 - self.touchLabel.width() / 2), int(self.fc.height / 2 - self.touchLabel.height() / 2))
         self.btnTouch.move(130, self.fc.height - 120)
 
     def showDevMode(self):
@@ -92,4 +107,19 @@ class QSmartFrameView(QMainWindow):
 
     def hideDevMode(self):
         self.dev.frame.hide()
+
+    def touchVisibility(self):
+        if not self.fc.isTouch:
+            self.arrowBtn.hide()
+            self.arrowBtnL.hide()
+            self.pauseBtn.hide()
+            self.playBtn.hide()
+        else:
+            self.arrowBtn.show()
+            self.arrowBtnL.show()
+            if self.fc.pause:
+                self.playBtn.show()
+            else:
+                self.pauseBtn.show()
+
 

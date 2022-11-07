@@ -23,6 +23,8 @@ class Controller(object):
         self.model = Model()
         self.view = QSmartFrameView()
 
+        self.view.touchVisibility()
+
         '''
         Timer
         '''
@@ -35,6 +37,8 @@ class Controller(object):
         '''
         self.view.arrowBtn.clicked.connect(self.nextPicture)
         self.view.arrowBtnL.clicked.connect(self.backwardImage)
+        self.view.pauseBtn.clicked.connect(self.pauseImage)
+        self.view.playBtn.clicked.connect(self.pauseImage)
         self.view.btnDev.clicked.connect(self.view.showDevMode)
 
         self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
@@ -59,6 +63,20 @@ class Controller(object):
     def backwardImage(self, event):
         self.counter = self.model.getCounterValue(self.counter, "l")
         self.setImage(self.getImage())
+
+    def pauseImage(self, event):
+        self.fc.pause = not self.fc.pause
+
+        if TimeState.started:
+            if self.fc.pause:
+                self.pictureTimer.quitLoopTimer()
+                self.view.pauseBtn.hide()
+                self.view.playBtn.show()
+            else:
+                self.startPictureTimer()
+                self.view.playBtn.hide()
+                self.view.pauseBtn.show()
+
 
     def getImage(self):
         Log.l(inspect.currentframe(), "getImage")
@@ -103,9 +121,10 @@ class Controller(object):
         Log.d(inspect.currentframe(), "touchDurationCallback")
         match self.touchTimer.state:
             case TimeState.started:
-                self.view.touchLabel.show()
+                self.fc.isTouch = True
             case TimeState.stopped:
-                self.view.touchLabel.hide()
+                self.fc.isTouch = False
+        self.view.touchVisibility()
 
     def startTouchTimer(self, event):
         self.touchTimer.startTouchTimer(self.fc.touchDurationTime)
@@ -116,4 +135,3 @@ class Controller(object):
     def updateSettings(self, event):
         self.view.hideDevMode()
         self.fc.updateConfig(pictureTime=self.view.dev.getPictureTime())
-        self.startPictureTimer()

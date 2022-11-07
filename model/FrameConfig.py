@@ -29,8 +29,14 @@ class FrameConfig(object):
         '''
         Timer configurations
         '''
-        self.touchDurationTime = 3
+        self.touchDurationTime = 4
         self.pictureTime = 3
+        self.pause = False
+
+        '''
+        Touch config
+        '''
+        self.isTouch = False
 
     def updateConfig(self, pictureTime):
         self.pictureTime = pictureTime
