@@ -70,6 +70,7 @@ class Controller(object):
     def setImage(self, param):
         Log.l(inspect.currentframe(), "setImage")
         resizedPix = QPixmap(param).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
+
         self.view.image.setPixmap(resizedPix)
         message = self.model.images[self.counter].message
         if message == "":
@@ -83,8 +84,8 @@ class Controller(object):
         self.fc.isFullScreen = not self.fc.isFullScreen
         if self.fc.isFullScreen:
             self.view.showFullScreen()
-            self.fc.width = self.view.width()
-            self.fc.height = self.view.height()
+            self.fc.width = self.fc.w
+            self.fc.height = self.fc.h
         else:
             self.view.showMaximized()
             self.view.showNormal()

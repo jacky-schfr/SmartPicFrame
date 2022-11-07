@@ -17,7 +17,6 @@ class QSmartFrameView(QMainWindow):
         self.setStyleSheet("QWidget#main {background-color:'BLACK';}")
 
         self.image = QLabel(self)
-        self.image.resize(self.fc.width, self.fc.height,)
         self.image.setAlignment(Qt.AlignCenter)
         self.pixmap = QPixmap("")
         self.image.setPixmap(self.pixmap)
@@ -76,6 +75,8 @@ class QSmartFrameView(QMainWindow):
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
+
+        self.image.resize(self.fc.width, self.fc.height, )
 
         self.msg.move(self.fc.width - 200, self.fc.height - 70)
         self.btnDev.move(130, self.fc.height - 70)

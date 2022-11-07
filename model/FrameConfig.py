@@ -1,3 +1,6 @@
+from PyQt5.QtWidgets import QApplication
+
+
 class FrameConfig(object):
     __instance = None
 
@@ -17,6 +20,11 @@ class FrameConfig(object):
         self.isFullScreen = False
         self.width = 1280
         self.height = 720
+
+        self.desktop = QApplication.desktop()
+        self.rect = self.desktop.screenGeometry()
+        self.h = self.rect.height()
+        self.w = self.rect.width()
 
         '''
         Timer configurations
