@@ -1,15 +1,16 @@
 import inspect
 import os
-import shutil
+import platform
 from model.Picture import Picture
 
 from utils import Log
 
 
 class Model(object):
-
-    path = "/home/jacky/Dropbox/Synchronisierter Ordner/" #Linux path
-    # path = "" #Windows path
+    if platform.system() == "Windows":
+        path = r"C:/Users/marce/Cookies/Desktop/DropboxDB/Dropbox/Synchronisierter Ordner/"  # Windows path
+    else:
+        path = "/home/jacky/Dropbox/Synchronisierter Ordner/"  # Linux path
 
     images = []
 
@@ -36,4 +37,3 @@ class Model(object):
             else:
                 counter = len(self.images) - 1
         return counter
-

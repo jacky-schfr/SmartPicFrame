@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
 from model.FrameConfig import FrameConfig
+from model.JsonManager import JsonManager
 from model.PictureManager import Model
 from model.time_manager.PictureTimeManager import PictureTimeManager
 from model.time_manager.TimeState import TimeState
@@ -16,6 +17,7 @@ class Controller(object):
     def __init__(self):
         Log.l(inspect.currentframe(), "init controller")
         self.fc = FrameConfig()
+        self.jm = JsonManager()
 
         self.counter = 0
         self.isDevMode = False
@@ -50,7 +52,6 @@ class Controller(object):
         self.view.playBtn.btn.clicked.connect(self.startTouchTimer)
         self.view.touchFrame.mousePressEvent = self.startTouchTimer
 
-
         '''
         Controller logic
         '''
@@ -81,7 +82,6 @@ class Controller(object):
                 self.startPictureTimer()
                 self.view.playBtn.btn.hide()
                 self.view.pauseBtn.btn.show()
-
 
     def getImage(self):
         Log.l(inspect.currentframe(), "getImage")

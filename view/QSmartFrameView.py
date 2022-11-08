@@ -14,7 +14,7 @@ class QSmartFrameView(QMainWindow):
 
         self.fc = FrameConfig()
 
-        self.setWindowTitle("Gallery")
+        self.setWindowTitle("SmartPicFrame")
         self.setObjectName("main")
         self.setStyleSheet("QMainWindow#main {background-color:'BLACK';}")
 
@@ -62,7 +62,7 @@ class QSmartFrameView(QMainWindow):
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
 
-        self.image.resize(self.fc.width, self.fc.height, )
+        self.image.resize(self.fc.width, self.fc.height)
 
         self.msg.move(self.fc.width - 200, self.fc.height - 70)
         self.btnDev.move(130, self.fc.height - 70)

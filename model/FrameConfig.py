@@ -30,7 +30,7 @@ class FrameConfig(object):
         Timer configurations
         '''
         self.touchDurationTime = 4
-        self.pictureTime = 3
+        self.pictureTime = 4
         self.pause = False
 
         '''
