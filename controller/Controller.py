@@ -35,16 +35,21 @@ class Controller(object):
         '''
         SmartPicFrame screen control
         '''
-        self.view.arrowBtn.clicked.connect(self.nextPicture)
-        self.view.arrowBtnL.clicked.connect(self.backwardImage)
-        self.view.pauseBtn.clicked.connect(self.pauseImage)
-        self.view.playBtn.clicked.connect(self.pauseImage)
+        self.view.arrowBtn.btn.clicked.connect(self.nextPicture)
+        self.view.arrowBtnL.btn.clicked.connect(self.backwardImage)
+        self.view.pauseBtn.btn.clicked.connect(self.pauseImage)
+        self.view.playBtn.btn.clicked.connect(self.pauseImage)
         self.view.btnDev.clicked.connect(self.view.showDevMode)
 
         self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
         self.view.dev.btnClose.clicked.connect(self.updateSettings)
 
-        self.view.btnTouch.clicked.connect(self.startTouchTimer)
+        self.view.arrowBtn.btn.clicked.connect(self.startTouchTimer)
+        self.view.arrowBtnL.btn.clicked.connect(self.startTouchTimer)
+        self.view.pauseBtn.btn.clicked.connect(self.startTouchTimer)
+        self.view.playBtn.btn.clicked.connect(self.startTouchTimer)
+        self.view.touchFrame.mousePressEvent = self.startTouchTimer
+
 
         '''
         Controller logic
@@ -70,12 +75,12 @@ class Controller(object):
         if TimeState.started:
             if self.fc.pause:
                 self.pictureTimer.quitLoopTimer()
-                self.view.pauseBtn.hide()
-                self.view.playBtn.show()
+                self.view.pauseBtn.btn.hide()
+                self.view.playBtn.btn.show()
             else:
                 self.startPictureTimer()
-                self.view.playBtn.hide()
-                self.view.pauseBtn.show()
+                self.view.playBtn.btn.hide()
+                self.view.pauseBtn.btn.show()
 
 
     def getImage(self):
