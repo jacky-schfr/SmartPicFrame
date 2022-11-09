@@ -1,6 +1,7 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import *
+from PyQt5.uic.properties import QtWidgets
 
 from model.FrameConfig import FrameConfig
 from view.QTransparentButtonView import TransparentButton
@@ -23,14 +24,11 @@ class QSmartFrameView(QMainWindow):
         self.pixmap = QPixmap("")
         self.image.setPixmap(self.pixmap)
 
-        self.msg = QLabel("", self)
-        self.msg.setStyleSheet("border: 4px solid white; border-radius: 4px; color:'WHITE';")
 
         '''
         Touch Layer / Frame
         '''
         self.touchFrame = QLabel(self)
-        self.touchFrame.setFixedSize(self.fc.width, self.fc.height)
 
         '''
         Initialize Buttons
@@ -43,6 +41,14 @@ class QSmartFrameView(QMainWindow):
         self.playBtn.btn.hide()
         self.arrowBtn = TransparentButton(self, 'graphics/arrowButtonTmp.png')
         self.arrowBtnL = TransparentButton(self, 'graphics/arrowButtonTmpL.png')
+        self.messageBtn = TransparentButton(self, 'graphics/messageBtn.png')
+        self.messageOpen = TransparentButton (self, 'graphics/messageOpen.png')
+        self.messageOpen.btn.setIconSize(QSize(200, 200))
+        self.messageBtn.btn.hide()
+
+        self.msg = QLabel("", self)
+        self.msg.setStyleSheet("color:'WHITE'; background-color: hsva(0, 0, 0, 60%); font: large 'Arial'; font-size: 50px;")
+        self.msg.setWordWrap(True)
 
         '''
         QDevelopView
@@ -62,15 +68,17 @@ class QSmartFrameView(QMainWindow):
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
 
-        self.image.resize(self.fc.width, self.fc.height)
-
-        self.msg.move(self.fc.width - 200, self.fc.height - 70)
+        self.msg.move(int(self.fc.width/2)-350, self.fc.height - 300)
         self.btnDev.move(130, self.fc.height - 70)
         self.arrowBtn.btn.move(self.fc.width - 200, int(self.fc.height/2)-100)
         self.arrowBtnL.btn.move(50, int(self.fc.height/2)-100)
         self.pauseBtn.btn.move(int(self.fc.width/2)-100, int(self.fc.height/2)-100)
         self.playBtn.btn.move(int(self.fc.width / 2) - 100, int(self.fc.height / 2) - 100)
+        self.messageBtn.btn.move(self.fc.width - 200, self.fc.height - 175)
+        self.messageOpen.btn.move(self.fc.width - 200, self.fc.height - 200)
 
+        self.touchFrame.resize(self.fc.width, self.fc.height)
+        self.image.resize(self.fc.width, self.fc.height)
 
     def showDevMode(self):
         self.dev.setValues()
@@ -92,5 +100,15 @@ class QSmartFrameView(QMainWindow):
                 self.playBtn.btn.show()
             else:
                 self.pauseBtn.btn.show()
+
+    def messageVisibility(self):
+        if self.fc.showMessage:
+            self.messageBtn.btn.hide()
+            self.messageOpen.btn.show()
+            self.msg.show()
+        else:
+            self.messageBtn.btn.show()
+            self.messageOpen.btn.hide()
+            self.msg.hide()
 
 

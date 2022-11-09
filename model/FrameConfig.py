@@ -37,6 +37,10 @@ class FrameConfig(object):
         Touch config
         '''
         self.isTouch = False
+        '''
+        Message confic
+        '''
+        self.showMessage = True
 
     def updateConfig(self, pictureTime):
         self.pictureTime = pictureTime

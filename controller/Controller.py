@@ -46,6 +46,9 @@ class Controller(object):
         self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
         self.view.dev.btnClose.clicked.connect(self.updateSettings)
 
+        self.view.messageBtn.btn.clicked.connect(self.toggleMessage)
+        self.view.messageOpen.btn.clicked.connect(self.toggleMessage)
+
         self.view.arrowBtn.btn.clicked.connect(self.startTouchTimer)
         self.view.arrowBtnL.btn.clicked.connect(self.startTouchTimer)
         self.view.pauseBtn.btn.clicked.connect(self.startTouchTimer)
@@ -91,15 +94,17 @@ class Controller(object):
         return img
 
     def setImage(self, param):
+        print(self.fc.showMessage)
+        self.view.messageVisibility()
         Log.l(inspect.currentframe(), "setImage")
         resizedPix = QPixmap(param).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
 
         self.view.image.setPixmap(resizedPix)
         message = self.model.images[self.counter].message
         if message == "":
+            self.view.messageBtn.btn.hide()
             self.view.msg.hide()
         else:
-            self.view.msg.show()
             self.view.msg.setText(message)
             self.view.msg.adjustSize()
 
@@ -140,3 +145,9 @@ class Controller(object):
     def updateSettings(self, event):
         self.view.hideDevMode()
         self.fc.updateConfig(pictureTime=self.view.dev.getPictureTime())
+
+    def toggleMessage(self, event):
+        self.fc.showMessage = not self.fc.showMessage
+        print("Message CLICK!!!!")
+        self.view.messageVisibility()
+
