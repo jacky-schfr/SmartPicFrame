@@ -29,8 +29,8 @@ class FrameConfig(object):
         '''
         Timer configurations
         '''
-        self.touchDurationTime = 4
-        self.pictureTime = 4
+        self.touchDurationTime = 2
+        self.pictureTime = 6
         self.pause = False
 
         '''
@@ -41,6 +41,7 @@ class FrameConfig(object):
         Message confic
         '''
         self.showMessage = True
+        self.msgHeight = 0
 
     def updateConfig(self, pictureTime):
         self.pictureTime = pictureTime

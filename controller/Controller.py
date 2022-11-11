@@ -107,6 +107,8 @@ class Controller(object):
         else:
             self.view.msg.setText(message)
             self.view.msg.adjustSize()
+            self.fc.msgHeight = self.view.msg.height()
+            self.view.messageMove()
 
     def toggleFullScreen(self, event):
         self.fc.isFullScreen = not self.fc.isFullScreen
@@ -122,6 +124,7 @@ class Controller(object):
 
         self.view.dev.setPosition()
         self.view.setPosition()
+        self.view.messageMove()
 
     def pictureLoopCallback(self):
         Log.d(inspect.currentframe(), "pictureLoopCallback")

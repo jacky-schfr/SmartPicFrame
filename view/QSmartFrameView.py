@@ -36,6 +36,12 @@ class QSmartFrameView(QMainWindow):
         self.btnDev = QPushButton(self)
         self.btnDev.setText("Dev Mode")
 
+        self.msg = QLabel(self)
+        self.msg.setStyleSheet("color:'WHITE'; background-color: hsva(0, 0, 0, 60%); font: large 'Arial'; font-size: 50px;")
+        self.msg.setFixedWidth(700)
+        self.msg.setAlignment(Qt.AlignLeft)
+        self.msg.setWordWrap(True)
+
         self.pauseBtn = TransparentButton(self, 'graphics/pauseBtn.png')
         self.playBtn = TransparentButton(self, 'graphics/playBtn.png')
         self.playBtn.btn.hide()
@@ -45,10 +51,6 @@ class QSmartFrameView(QMainWindow):
         self.messageOpen = TransparentButton (self, 'graphics/messageOpen.png')
         self.messageOpen.btn.setIconSize(QSize(200, 200))
         self.messageBtn.btn.hide()
-
-        self.msg = QLabel("", self)
-        self.msg.setStyleSheet("color:'WHITE'; background-color: hsva(0, 0, 0, 60%); font: large 'Arial'; font-size: 50px;")
-        self.msg.setWordWrap(True)
 
         '''
         QDevelopView
@@ -66,9 +68,7 @@ class QSmartFrameView(QMainWindow):
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
-        self.move(qtRectangle.topLeft())
 
-        self.msg.move(int(self.fc.width/2)-350, self.fc.height - 300)
         self.btnDev.move(130, self.fc.height - 70)
         self.arrowBtn.btn.move(self.fc.width - 200, int(self.fc.height/2)-100)
         self.arrowBtnL.btn.move(50, int(self.fc.height/2)-100)
@@ -76,6 +76,7 @@ class QSmartFrameView(QMainWindow):
         self.playBtn.btn.move(int(self.fc.width / 2) - 100, int(self.fc.height / 2) - 100)
         self.messageBtn.btn.move(self.fc.width - 200, self.fc.height - 175)
         self.messageOpen.btn.move(self.fc.width - 200, self.fc.height - 200)
+        self.move(qtRectangle.topLeft())
 
         self.touchFrame.resize(self.fc.width, self.fc.height)
         self.image.resize(self.fc.width, self.fc.height)
@@ -110,5 +111,8 @@ class QSmartFrameView(QMainWindow):
             self.messageBtn.btn.show()
             self.messageOpen.btn.hide()
             self.msg.hide()
+
+    def messageMove(self):
+        self.msg.move(int(self.fc.width/2 - self.msg.width()/2), int(self.fc.height - self.fc.msgHeight - 50))
 
 
