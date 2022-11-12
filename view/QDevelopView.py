@@ -41,7 +41,7 @@ class QDevelopView:
         self.pathName.setGraphicsEffect(getColorEffect())
         self.pathName.setFont(QFont('Arial', 12))
         self.pathLine = QLineEdit(self.frame)
-        self.pathLine.resize(500, 24)
+        self.pathLine.resize(700, 24)
         self.pathLine.setFont(QFont('Arial', 10))
 
         self.durationName = QLabel(self.frame)
@@ -100,7 +100,11 @@ class QDevelopView:
         self.btnClose.move(int(self.fc.width / 2 - self.btnClose.width() / 2 - self.offset), self.guideLine2)
 
     def setValues(self):
+        self.pathLine.setText(self.fc.path)
         self.durationLine.setText(str(self.fc.pictureTime))
+
+    def getPath(self):
+        return self.pathLine.text()
 
     def getPictureTime(self):
         return int(self.durationLine.text())

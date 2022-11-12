@@ -1,22 +1,20 @@
 import inspect
 import os
-import platform
+
+from model.FrameConfig import FrameConfig
 from model.Picture import Picture
 
 from utils import Log
 
 
 class Model(object):
-    if platform.system() == "Windows":
-        path = r"C:/Users/marce/Cookies/Desktop/DropboxDB/Dropbox/Synchronisierter Ordner/"  # Windows path
-    else:
-        path = "/home/jacky/Dropbox/Synchronisierter Ordner/"  # Linux path
+    fc = FrameConfig()
 
     images = []
 
-    if os.path.exists(path):
-        for file in os.listdir(path):
-            img = Picture(path + file)
+    if os.path.exists(fc.path):
+        for file in os.listdir(fc.path):
+            img = Picture(fc.path + file)
             images.append(img)
         if not images:
             images.append(Picture('defaultImage/defaultImg.png'))

@@ -2,6 +2,7 @@ import inspect
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication
 
 from model.FrameConfig import FrameConfig
 from model.JsonManager import JsonManager
@@ -60,6 +61,12 @@ class Controller(object):
         '''
         self.nextPicture(self)
 
+        '''
+        Update FrameConfig from Json file
+        '''
+        self.jm.readJsonFile()
+        self.jm.writeJsonFile()
+
     def nextPicture(self, event):
         Log.l(inspect.currentframe(), "nextPicture")
         self.forwardImage()
@@ -103,6 +110,7 @@ class Controller(object):
         message = self.model.images[self.counter].message
         if message == "":
             self.view.messageBtn.btn.hide()
+            self.view.messageOpen.btn.hide()
             self.view.msg.hide()
         else:
             self.view.msg.setText(message)
@@ -147,7 +155,8 @@ class Controller(object):
 
     def updateSettings(self, event):
         self.view.hideDevMode()
-        self.fc.updateConfig(pictureTime=self.view.dev.getPictureTime())
+        self.fc.updateConfig(path=self.view.dev.getPath(), pictureTime=self.view.dev.getPictureTime())
+        self.jm.writeJsonFile()
 
     def toggleMessage(self, event):
         self.fc.showMessage = not self.fc.showMessage

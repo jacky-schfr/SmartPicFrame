@@ -1,3 +1,5 @@
+import platform
+
 from PyQt5.QtWidgets import QApplication
 
 
@@ -21,27 +23,36 @@ class FrameConfig(object):
         self.width = 1280
         self.height = 720
 
-        self.desktop = QApplication.desktop()
-        self.rect = self.desktop.screenGeometry()
-        self.h = self.rect.height()
-        self.w = self.rect.width()
+        self.h = 0
+        self.w = 0
+
+        '''
+        Directory config
+        '''
+        if platform.system() == "Windows":
+            picturePath = r"C:/Users/marce/Cookies/Desktop/DropboxDB/Dropbox/Synchronisierter Ordner/"  # Windows path
+        else:
+            picturePath = "/home/jacky/Dropbox/Synchronisierter Ordner/"  # Linux path
+        self.path = picturePath
 
         '''
         Timer configurations
         '''
-        self.touchDurationTime = 2
-        self.pictureTime = 6
+        self.touchDurationTime = 4
+        self.pictureTime = 10
         self.pause = False
 
         '''
         Touch config
         '''
         self.isTouch = False
+
         '''
-        Message confic
+        Message config
         '''
         self.showMessage = True
         self.msgHeight = 0
 
-    def updateConfig(self, pictureTime):
+    def updateConfig(self, path, pictureTime):
+        self.path = path
         self.pictureTime = pictureTime
