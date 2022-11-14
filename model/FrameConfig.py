@@ -1,7 +1,5 @@
 import platform
 
-from PyQt5.QtWidgets import QApplication
-
 
 class FrameConfig(object):
     __instance = None
@@ -56,3 +54,9 @@ class FrameConfig(object):
     def updateConfig(self, path, pictureTime):
         self.path = path
         self.pictureTime = pictureTime
+
+    def toggleFullScreen(self, state):
+        if state:
+            self.isFullScreen = True
+        else:
+            self.isFullScreen = False

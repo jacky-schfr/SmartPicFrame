@@ -62,6 +62,7 @@ class QDevelopView:
         self.seminoName.setFont(QFont('Arial', 12))
         self.btnSemino = QPushButton(self.frame)
         self.btnSemino.setText("an/aus")
+        self.btnSemino.setChecked(True)
 
         self.fullScreenName = QLabel(self.frame)
         self.fullScreenName.setText("Vollbild:")
@@ -69,6 +70,7 @@ class QDevelopView:
         self.fullScreenName.setFont(QFont('Arial', 12))
         self.btnFullScreen = QPushButton(self.frame)
         self.btnFullScreen.setText("an/aus")
+        self.btnFullScreen.setCheckable(True)
 
         self.btnClose = QPushButton(self.frame)
         self.btnClose.setText("Schließen")
@@ -102,6 +104,7 @@ class QDevelopView:
     def setValues(self):
         self.pathLine.setText(self.fc.path)
         self.durationLine.setText(str(self.fc.pictureTime))
+        self.btnFullScreen.setChecked(self.fc.isFullScreen)
 
     def getPath(self):
         return self.pathLine.text()

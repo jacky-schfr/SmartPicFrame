@@ -1,7 +1,6 @@
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QEvent
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import *
-from PyQt5.uic.properties import QtWidgets
 
 from model.FrameConfig import FrameConfig
 from view.QTransparentButtonView import TransparentButton
@@ -33,9 +32,6 @@ class QSmartFrameView(QMainWindow):
         '''
         Initialize Buttons
         '''
-        self.btnDev = QPushButton(self)
-        self.btnDev.setText("Dev Mode")
-
         self.msg = QLabel(self)
         self.msg.setStyleSheet("color:'WHITE'; background-color: hsva(0, 0, 0, 60%); font: large 'Arial'; font-size: 50px;")
         self.msg.setFixedWidth(700)
@@ -69,7 +65,6 @@ class QSmartFrameView(QMainWindow):
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
 
-        self.btnDev.move(130, self.fc.height - 70)
         self.arrowBtn.btn.move(self.fc.width - 200, int(self.fc.height/2)-100)
         self.arrowBtnL.btn.move(50, int(self.fc.height/2)-100)
         self.pauseBtn.btn.move(int(self.fc.width/2)-100, int(self.fc.height/2)-100)
@@ -115,4 +110,7 @@ class QSmartFrameView(QMainWindow):
     def messageMove(self):
         self.msg.move(int(self.fc.width/2 - self.msg.width()/2), int(self.fc.height - self.fc.msgHeight - 50))
 
+    def keyPressEvent(self, event):
+        if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Escape:
+            self.showDevMode()
 

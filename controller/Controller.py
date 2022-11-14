@@ -2,7 +2,6 @@ import inspect
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication
 
 from model.FrameConfig import FrameConfig
 from model.JsonManager import JsonManager
@@ -42,9 +41,7 @@ class Controller(object):
         self.view.arrowBtnL.btn.clicked.connect(self.backwardImage)
         self.view.pauseBtn.btn.clicked.connect(self.pauseImage)
         self.view.playBtn.btn.clicked.connect(self.pauseImage)
-        self.view.btnDev.clicked.connect(self.view.showDevMode)
 
-        self.view.dev.btnFullScreen.clicked.connect(self.toggleFullScreen)
         self.view.dev.btnClose.clicked.connect(self.updateSettings)
 
         self.view.messageBtn.btn.clicked.connect(self.toggleMessage)
@@ -66,6 +63,8 @@ class Controller(object):
         '''
         self.jm.readJsonFile()
         self.jm.writeJsonFile()
+
+        self.updateScreen()
 
     def nextPicture(self, event):
         Log.l(inspect.currentframe(), "nextPicture")
@@ -118,8 +117,7 @@ class Controller(object):
             self.fc.msgHeight = self.view.msg.height()
             self.view.messageMove()
 
-    def toggleFullScreen(self, event):
-        self.fc.isFullScreen = not self.fc.isFullScreen
+    def updateScreen(self):
         if self.fc.isFullScreen:
             self.view.showFullScreen()
             self.fc.width = self.fc.w
@@ -155,11 +153,11 @@ class Controller(object):
 
     def updateSettings(self, event):
         self.view.hideDevMode()
+        self.fc.toggleFullScreen(self.view.dev.btnFullScreen.isChecked())
         self.fc.updateConfig(path=self.view.dev.getPath(), pictureTime=self.view.dev.getPictureTime())
         self.jm.writeJsonFile()
+        self.updateScreen()
 
     def toggleMessage(self, event):
         self.fc.showMessage = not self.fc.showMessage
-        print("Message CLICK!!!!")
         self.view.messageVisibility()
-
