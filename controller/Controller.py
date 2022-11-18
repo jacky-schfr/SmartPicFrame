@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPixmap
 
 from model.FrameConfig import FrameConfig
 from model.JsonManager import JsonManager
-from model.PictureManager import Model
+from model.PictureManager import PictureManager
 from model.time_manager.PictureTimeManager import PictureTimeManager
 from model.time_manager.TimeState import TimeState
 from model.time_manager.TouchDurationTimeManager import TouchDurationTimeManager
@@ -19,13 +19,11 @@ class Controller(object):
         self.fc = FrameConfig()
         self.jm = JsonManager()
 
+        #TODO @jacky: counter und getImage() können in den PictureManager.py eingebaut werden.
         self.counter = 0
-        self.isDevMode = False
 
-        self.model = Model()
+        self.pictureManager = PictureManager()
         self.view = QSmartFrameView()
-
-        self.view.touchVisibility()
 
         '''
         Timer
@@ -64,6 +62,7 @@ class Controller(object):
         self.jm.readJsonFile()
         self.jm.writeJsonFile()
 
+        self.view.touchVisibility()
         self.updateScreen()
 
     def nextPicture(self, event):
@@ -71,12 +70,11 @@ class Controller(object):
         self.forwardImage()
 
     def forwardImage(self):
-        Log.l(inspect.currentframe(), "updateImage")
-        self.counter = self.model.getCounterValue(self.counter, "r")
+        self.counter = self.pictureManager.getCounterValue(self.counter, "r")
         self.setImage(self.getImage())
 
     def backwardImage(self, event):
-        self.counter = self.model.getCounterValue(self.counter, "l")
+        self.counter = self.pictureManager.getCounterValue(self.counter, "l")
         self.setImage(self.getImage())
 
     def pauseImage(self, event):
@@ -94,19 +92,18 @@ class Controller(object):
 
     def getImage(self):
         Log.l(inspect.currentframe(), "getImage")
-        temp = self.model.images[self.counter]
+        temp = self.pictureManager.images[self.counter]
         img = temp.file
         Log.d(inspect.currentframe(), "image: " + str(img))
         return img
 
     def setImage(self, param):
-        print(self.fc.showMessage)
-        self.view.messageVisibility()
         Log.l(inspect.currentframe(), "setImage")
+        self.view.messageVisibility()
         resizedPix = QPixmap(param).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
 
         self.view.image.setPixmap(resizedPix)
-        message = self.model.images[self.counter].message
+        message = self.pictureManager.images[self.counter].message
         if message == "":
             self.view.messageBtn.btn.hide()
             self.view.messageOpen.btn.hide()

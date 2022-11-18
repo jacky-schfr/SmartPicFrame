@@ -7,7 +7,7 @@ from model.Picture import Picture
 from utils import Log
 
 
-class Model(object):
+class PictureManager(object):
     fc = FrameConfig()
 
     images = []
