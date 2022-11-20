@@ -1,5 +1,6 @@
 import inspect
 
+import dateutil.utils
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
@@ -56,6 +57,8 @@ class Controller(object):
         '''
         self.nextPicture(self)
 
+        self.lastUpdate()
+
         '''
         Update FrameConfig from Json file
         '''
@@ -104,6 +107,7 @@ class Controller(object):
 
         self.view.image.setPixmap(resizedPix)
         message = self.pictureManager.images[self.counter].message
+        # self.imageCounter()
         if message == "":
             self.view.messageBtn.btn.hide()
             self.view.messageOpen.btn.hide()
@@ -158,3 +162,10 @@ class Controller(object):
     def toggleMessage(self, event):
         self.fc.showMessage = not self.fc.showMessage
         self.view.messageVisibility()
+
+    def lastUpdate(self):
+        self.fc.lastUpdate = str(dateutil.utils.today().strftime("%d.%m.%Y"))
+        self.view.lastDate.setText("Aktueller Stand:   " + self.fc.lastUpdate)
+
+    # def imageCounter(self):
+    #     self.view.imgCount.setText(str(self.counter) + " / " + str(len(self.pictureManager.images)))

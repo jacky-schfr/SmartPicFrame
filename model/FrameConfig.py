@@ -51,6 +51,8 @@ class FrameConfig(object):
         self.showMessage = True
         self.msgHeight = 0
 
+        self.lastUpdate = "WIP"
+
     def updateConfig(self, path, pictureTime):
         self.path = path
         self.pictureTime = pictureTime
