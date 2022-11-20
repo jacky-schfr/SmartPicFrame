@@ -103,8 +103,7 @@ class Controller(object):
 
         self.view.image.setPixmap(resizedPix)
         message = self.pictureManager.images[self.pictureManager.counter].message
-        # message = self.pictureManager.images[self.counter].message
-        # self.imageCounter()
+        self.imageCounter()
         if message == "":
             self.view.messageBtn.btn.hide()
             self.view.messageOpen.btn.hide()
@@ -170,5 +169,8 @@ class Controller(object):
         self.fc.lastUpdate = str(dateutil.utils.today().strftime("%d.%m.%Y"))
         self.view.lastDate.setText("Aktueller Stand:   " + self.fc.lastUpdate)
 
-    # def imageCounter(self):
-    #     self.view.imgCount.setText(str(self.counter) + " / " + str(len(self.pictureManager.images)))
+    def imageCounter(self):
+        pic = self.pictureManager.counter
+        if pic == 0:
+            pic = len(self.pictureManager.images)
+        self.view.imgCount.setText(str(pic) + " / " + str(len(self.pictureManager.images)))
