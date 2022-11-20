@@ -61,20 +61,22 @@ class QDevelopView:
         self.seminoName.setGraphicsEffect(getColorEffect())
         self.seminoName.setFont(QFont('Arial', 12))
         self.btnSemino = QPushButton(self.frame)
-        self.btnSemino.setText("an/aus")
-        self.btnSemino.setChecked(True)
+        self.btnSemino.setCheckable(True)
+        self.btnSemino.clicked.connect(self.__toggleBtnSemino)
 
         self.fullScreenName = QLabel(self.frame)
         self.fullScreenName.setText("Vollbild:")
         self.fullScreenName.setGraphicsEffect(getColorEffect())
         self.fullScreenName.setFont(QFont('Arial', 12))
         self.btnFullScreen = QPushButton(self.frame)
-        self.btnFullScreen.setText("an/aus")
         self.btnFullScreen.setCheckable(True)
+        self.btnFullScreen.clicked.connect(self.__toggleBtnFullScreen)
 
         self.btnClose = QPushButton(self.frame)
-        self.btnClose.setText("Schließen")
+        self.btnClose.setText("Speichern/Schließen")
 
+        self.__toggleBtnFullScreen()
+        self.__toggleBtnSemino()
         self.setPosition()
         self.setValues()
 
@@ -82,7 +84,8 @@ class QDevelopView:
         self.guideLine1 = int(self.__getRelativePos(30))
         self.guideLine2 = int(self.__getRelativePos(80))
 
-        self.frame.setGeometry(self.offset, self.offset, self.fc.width - self.offset * 2, self.fc.height - self.offset * 2)
+        self.frame.setGeometry(self.offset, self.offset, self.fc.width - self.offset * 2,
+                               self.fc.height - self.offset * 2)
 
         self.title.move(int(self.fc.width / 2 - self.title.width() / 2 - self.offset), 100)
 
@@ -106,11 +109,26 @@ class QDevelopView:
         self.durationLine.setText(str(self.fc.pictureTime))
         self.btnFullScreen.setChecked(self.fc.isFullScreen)
 
+        self.__toggleBtnFullScreen()
+        self.__toggleBtnSemino()
+
     def getPath(self):
         return self.pathLine.text()
 
     def getPictureTime(self):
         return int(self.durationLine.text())
+
+    def __toggleBtnFullScreen(self):
+        if self.btnFullScreen.isChecked():
+            self.btnFullScreen.setText("An")
+        else:
+            self.btnFullScreen.setText("Aus")
+
+    def __toggleBtnSemino(self):
+        if self.btnSemino.isChecked():
+            self.btnSemino.setText("An")
+        else:
+            self.btnSemino.setText("Aus")
 
     def __getRelativePos(self, percent):
         return (self.fc.height - self.offset * 2) / 100 * percent

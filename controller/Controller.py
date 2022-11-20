@@ -9,6 +9,7 @@ from model.PictureManager import PictureManager
 from model.time_manager.PictureTimeManager import PictureTimeManager
 from model.time_manager.TimeState import TimeState
 from model.time_manager.TouchDurationTimeManager import TouchDurationTimeManager
+from model.time_manager.UpdateListTimeManager import UpdateListTimeManager
 from utils import Log
 from view.QSmartFrameView import QSmartFrameView
 
@@ -19,17 +20,16 @@ class Controller(object):
         self.fc = FrameConfig()
         self.jm = JsonManager()
 
-        #TODO @jacky: counter und getImage() können in den PictureManager.py eingebaut werden.
-        self.counter = 0
-
         self.pictureManager = PictureManager()
         self.view = QSmartFrameView()
 
         '''
         Timer
         '''
+        self.updateListTimer = UpdateListTimeManager(self.updateListCallback)
         self.touchTimer = TouchDurationTimeManager(self.touchDurationCallback)
         self.pictureTimer = PictureTimeManager(self.pictureLoopCallback)
+        self.startUpdateListTimer()
         self.startPictureTimer()
 
         '''
@@ -70,12 +70,12 @@ class Controller(object):
         self.forwardImage()
 
     def forwardImage(self):
-        self.counter = self.pictureManager.getCounterValue(self.counter, "r")
-        self.setImage(self.getImage())
+        self.pictureManager.setCounterValue("r")
+        self.setImage(self.pictureManager.getImage())
 
     def backwardImage(self, event):
-        self.counter = self.pictureManager.getCounterValue(self.counter, "l")
-        self.setImage(self.getImage())
+        self.pictureManager.setCounterValue("l")
+        self.setImage(self.pictureManager.getImage())
 
     def pauseImage(self, event):
         self.fc.pause = not self.fc.pause
@@ -90,20 +90,13 @@ class Controller(object):
                 self.view.playBtn.btn.hide()
                 self.view.pauseBtn.btn.show()
 
-    def getImage(self):
-        Log.l(inspect.currentframe(), "getImage")
-        temp = self.pictureManager.images[self.counter]
-        img = temp.file
-        Log.d(inspect.currentframe(), "image: " + str(img))
-        return img
-
-    def setImage(self, param):
+    def setImage(self, image):
         Log.l(inspect.currentframe(), "setImage")
         self.view.messageVisibility()
-        resizedPix = QPixmap(param).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
+        resizedPix = QPixmap(image).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
 
         self.view.image.setPixmap(resizedPix)
-        message = self.pictureManager.images[self.counter].message
+        message = self.pictureManager.images[self.pictureManager.counter].message
         if message == "":
             self.view.messageBtn.btn.hide()
             self.view.messageOpen.btn.hide()
@@ -129,6 +122,9 @@ class Controller(object):
         self.view.setPosition()
         self.view.messageMove()
 
+    def updateListCallback(self):
+        Log.d(inspect.currentframe(), "updateListCallback")
+
     def pictureLoopCallback(self):
         Log.d(inspect.currentframe(), "pictureLoopCallback")
         self.forwardImage()
@@ -141,6 +137,9 @@ class Controller(object):
             case TimeState.stopped:
                 self.fc.isTouch = False
         self.view.touchVisibility()
+
+    def startUpdateListTimer(self):
+        self.updateListTimer.startUpdateListTimer()
 
     def startTouchTimer(self, event):
         self.touchTimer.startTouchTimer(self.fc.touchDurationTime)
