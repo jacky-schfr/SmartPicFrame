@@ -18,10 +18,21 @@ class QSmartFrameView(QMainWindow):
         self.setObjectName("main")
         self.setStyleSheet("QMainWindow#main {background-color:'BLACK';}")
 
+        self.blurEffect = QGraphicsBlurEffect()
+        self.blurEffect.setBlurRadius(18)
+
+        self.bgImage = QLabel(self)
+        self.bgImage.setGraphicsEffect(self.blurEffect)
+
+        self.darkBg = QLabel(self)
+        self.darkBg.setStyleSheet("background-color: rgba(0, 0, 0, 25%)")
+
         self.image = QLabel(self)
         self.image.setAlignment(Qt.AlignCenter)
+
         self.pixmap = QPixmap("")
         self.image.setPixmap(self.pixmap)
+        self.bgImage.setPixmap(self.pixmap)
 
         '''
         Touch Layer / Frame
@@ -50,14 +61,14 @@ class QSmartFrameView(QMainWindow):
         self.lastDate.setStyleSheet("color:'WHITE'; "
                                     "background-color: rgba(0, 0, 0, 60%); "
                                     "font: 'Helvetica'; "
-                                    "font-size: 25px;"
+                                    "font-size: 35px;"
                                     "border-width: 3px;"
                                     "border-style: solid;"
                                     "border-color: rgba(0, 0, 0, 60%);"
                                     "border-radius: 10px;")
-        self.lastDate.setAlignment(Qt.AlignLeft)
-        self.lastDate.setFixedWidth(380)
-        self.lastDate.setFixedHeight(self.lastDate.height()+10)
+        self.lastDate.setAlignment(Qt.AlignCenter)
+        self.lastDate.setFixedWidth(480)
+        self.lastDate.setFixedHeight(self.lastDate.height() + 10)
 
         '''
         Current Image Counter Display
@@ -66,7 +77,7 @@ class QSmartFrameView(QMainWindow):
         self.imgCount.setStyleSheet("color:'WHITE'; "
                                     "background-color: rgba(0, 0, 0, 60%); "
                                     "font: 'Helvetica'; "
-                                    "font-size: 25px;"
+                                    "font-size: 35px;"
                                     "border-width: 3px;"
                                     "border-style: solid;"
                                     "border-color: rgba(0, 0, 0, 60%);"
@@ -107,17 +118,21 @@ class QSmartFrameView(QMainWindow):
 
         self.arrowBtn.btn.move(self.fc.width - 200, int(self.fc.height / 2) - 100)
         self.arrowBtnL.btn.move(50, int(self.fc.height / 2) - 100)
-        self.pauseBtn.btn.move(int(self.fc.width / 2) - 100, int(self.fc.height / 2) - 100)
-        self.playBtn.btn.move(int(self.fc.width / 2) - 100, int(self.fc.height / 2) - 100)
+        self.pauseBtn.btn.move(int(self.fc.width / 2) - int(self.pauseBtn.btn.width() / 2),
+                               int(self.fc.height / 2) - 100)
+        self.playBtn.btn.move(int(self.fc.width / 2) - int(self.playBtn.btn.width() / 2) + 10,
+                              int(self.fc.height / 2) - 100)
         self.messageBtn.btn.move(self.fc.width - 200, self.fc.height - 175)
         self.messageOpen.btn.move(self.fc.width - 200, self.fc.height - 200)
         self.lastDate.move(self.fc.width - 500, 20)
-        self.imgCount.move(int(self.fc.width/2)-int(self.imgCount.width()/2), 20)
+        self.imgCount.move(int(self.fc.width / 2) - int(self.imgCount.width() / 2), 20)
         self.msg.setFixedWidth(int(self.fc.width * 0.65))
         self.move(qtRectangle.topLeft())
 
         self.touchFrame.resize(self.fc.width, self.fc.height)
         self.image.resize(self.fc.width, self.fc.height)
+        self.bgImage.resize(self.fc.width, self.fc.height)
+        self.darkBg.resize(self.fc.width, self.fc.height)
 
     def showDevMode(self):
         self.dev.setValues()
@@ -132,9 +147,13 @@ class QSmartFrameView(QMainWindow):
             self.arrowBtnL.btn.hide()
             self.pauseBtn.btn.hide()
             self.playBtn.btn.hide()
+            self.imgCount.hide()
+            self.lastDate.hide()
         else:
             self.arrowBtn.btn.show()
             self.arrowBtnL.btn.show()
+            self.imgCount.show()
+            self.lastDate.show()
             if self.fc.pause:
                 self.playBtn.btn.show()
             else:

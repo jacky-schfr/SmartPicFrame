@@ -87,7 +87,7 @@ class QDevelopView:
         self.frame.setGeometry(self.offset, self.offset, self.fc.width - self.offset * 2,
                                self.fc.height - self.offset * 2)
 
-        self.title.move(int(self.fc.width / 2 - self.title.width() / 2 - self.offset), 100)
+        self.title.move(int(self.fc.width / 2 - self.title.width() / 2), 100)
 
         self.pathName.move(20, self.guideLine1)
         self.pathLine.move(250, self.guideLine1)

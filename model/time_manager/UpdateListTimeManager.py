@@ -16,6 +16,7 @@ class UpdateListTimeManager:
     def __init__(self, callback):
         self.info = {"stop": False}
         self.thread = threading.Thread(target=worker, args=(self.info, callback))
+        self.thread.daemon = True
 
     def startUpdateListTimer(self):
         self.thread.start()

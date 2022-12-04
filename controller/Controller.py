@@ -21,9 +21,6 @@ class Controller(object):
         self.fc = FrameConfig()
         self.jm = JsonManager()
 
-        #TODO @jacky: counter und getImage() können in den PictureManager.py eingebaut werden.
-        self.counter = 0
-
         self.pictureManager = PictureManager()
         self.view = QSmartFrameView()
 
@@ -99,11 +96,14 @@ class Controller(object):
     def setImage(self, image):
         Log.l(inspect.currentframe(), "setImage")
         self.view.messageVisibility()
+        bgPix= QPixmap(image).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatioByExpanding)
         resizedPix = QPixmap(image).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
 
         self.view.image.setPixmap(resizedPix)
+        self.view.bgImage.setPixmap(bgPix)
         message = self.pictureManager.images[self.pictureManager.counter].message
         self.imageCounter()
+        self.view.imgCount.adjustSize()
         if message == "":
             self.view.messageBtn.btn.hide()
             self.view.messageOpen.btn.hide()
