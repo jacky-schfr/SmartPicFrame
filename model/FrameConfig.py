@@ -18,6 +18,8 @@ class FrameConfig(object):
         SmartPicFrame configurations
         '''
         self.isFullScreen = False
+        self.isSemino = False
+
         self.width = 1280
         self.height = 720
 
@@ -36,8 +38,8 @@ class FrameConfig(object):
         '''
         Timer configurations
         '''
-        self.touchDurationTime = 4
-        self.pictureTime = 10
+        self.touchDurationTime = 7
+        self.pictureTime = 600
         self.pause = False
 
         '''
@@ -62,3 +64,9 @@ class FrameConfig(object):
             self.isFullScreen = True
         else:
             self.isFullScreen = False
+
+    def toggleSeminoMode(self, state):
+        if state:
+            self.isSemino = True
+        else:
+            self.isSemino = False

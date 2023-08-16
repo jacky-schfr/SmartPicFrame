@@ -35,11 +35,6 @@ class QSmartFrameView(QMainWindow):
         self.bgImage.setPixmap(self.pixmap)
 
         '''
-        Touch Layer / Frame
-        '''
-        self.touchFrame = QLabel(self)
-
-        '''
         Message Box
         '''
         self.msg = QLabel(self)
@@ -53,6 +48,15 @@ class QSmartFrameView(QMainWindow):
                                "border-radius: 10px;")
         self.msg.setAlignment(Qt.AlignLeft)
         self.msg.setWordWrap(True)
+
+        '''
+        Semino
+        '''
+        self.seminoImage = QLabel(self)
+        self.seminoPixmap = QPixmap('defaultImage/seminoImg2.png')
+        self.seminoImage.setPixmap(self.seminoPixmap)
+        self.seminoImage.adjustSize()
+        self.seminoImage.hide()
 
         '''
         Last Update Display
@@ -85,6 +89,11 @@ class QSmartFrameView(QMainWindow):
         self.imgCount.setAlignment(Qt.AlignCenter)
         self.imgCount.setWordWrap(True)
         self.imgCount.setFixedHeight(self.imgCount.height() + 10)
+
+        '''
+        Touch Layer / Frame
+        '''
+        self.touchFrame = QLabel(self)
 
         '''
         Buttons
@@ -141,6 +150,9 @@ class QSmartFrameView(QMainWindow):
     def hideDevMode(self):
         self.dev.frame.hide()
 
+    def hideSemino(self):
+        self.seminoImage.hide()
+
     def touchVisibility(self):
         if not self.fc.isTouch:
             self.arrowBtn.btn.hide()
@@ -164,13 +176,17 @@ class QSmartFrameView(QMainWindow):
             self.messageBtn.btn.hide()
             self.messageOpen.btn.show()
             self.msg.show()
+            if self.fc.isSemino:
+                self.seminoImage.show()
         else:
             self.messageBtn.btn.show()
             self.messageOpen.btn.hide()
             self.msg.hide()
+            self.seminoImage.hide()
 
     def messageMove(self):
         self.msg.move(int(self.fc.width / 2 - self.msg.width() / 2), int(self.fc.height - self.fc.msgHeight - 50))
+        self.seminoImage.move(self.msg.x() - self.seminoPixmap.width() + 75, self.fc.height - self.seminoPixmap.height())
 
     def keyPressEvent(self, event):
         if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Escape:

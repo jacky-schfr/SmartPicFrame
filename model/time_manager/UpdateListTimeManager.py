@@ -9,7 +9,7 @@ def worker(arg, callback):
     while not arg["stop"]:
         Log.l(inspect.currentframe(), "worker thread update")
         callback()
-        time.sleep(3)
+        time.sleep(3600)
 
 
 class UpdateListTimeManager:

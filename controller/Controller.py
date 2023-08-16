@@ -21,6 +21,12 @@ class Controller(object):
         self.fc = FrameConfig()
         self.jm = JsonManager()
 
+        '''
+        Update FrameConfig from Json file
+        '''
+        self.jm.readJsonFile()
+        self.jm.writeJsonFile()
+
         self.pictureManager = PictureManager()
         self.view = QSmartFrameView()
 
@@ -59,12 +65,6 @@ class Controller(object):
 
         self.lastUpdate()
 
-        '''
-        Update FrameConfig from Json file
-        '''
-        self.jm.readJsonFile()
-        self.jm.writeJsonFile()
-
         self.view.touchVisibility()
         self.updateScreen()
 
@@ -73,12 +73,10 @@ class Controller(object):
         self.forwardImage()
 
     def forwardImage(self):
-        self.pictureManager.setCounterValue("r")
-        self.setImage(self.pictureManager.getImage())
+        self.setImage(self.pictureManager.getImage("r"))
 
     def backwardImage(self, event):
-        self.pictureManager.setCounterValue("l")
-        self.setImage(self.pictureManager.getImage())
+        self.setImage(self.pictureManager.getImage("l"))
 
     def pauseImage(self, event):
         self.fc.pause = not self.fc.pause
@@ -101,13 +99,17 @@ class Controller(object):
 
         self.view.image.setPixmap(resizedPix)
         self.view.bgImage.setPixmap(bgPix)
-        message = self.pictureManager.images[self.pictureManager.counter].message
+        if len(self.pictureManager.images) > 0:
+            message = self.pictureManager.images[self.pictureManager.counter].message
+        else:
+            message = ""
         self.imageCounter()
         self.view.imgCount.adjustSize()
         if message == "":
             self.view.messageBtn.btn.hide()
             self.view.messageOpen.btn.hide()
             self.view.msg.hide()
+            self.view.seminoImage.hide()
         else:
             self.view.msg.setText(message)
             self.view.msg.adjustSize()
@@ -131,6 +133,12 @@ class Controller(object):
 
     def updateListCallback(self):
         Log.d(inspect.currentframe(), "updateListCallback")
+        if not self.pictureManager.checkListUpdate():
+            print("NOT EQUALS")
+            self.pictureManager.updateImageList()
+            self.lastUpdate()
+        else:
+            print("EQUALS")
 
     def pictureLoopCallback(self):
         Log.d(inspect.currentframe(), "pictureLoopCallback")
@@ -157,6 +165,10 @@ class Controller(object):
     def updateSettings(self, event):
         self.view.hideDevMode()
         self.fc.toggleFullScreen(self.view.dev.btnFullScreen.isChecked())
+        self.fc.toggleSeminoMode(self.view.dev.btnSemino.isChecked())
+        if not self.fc.isSemino:
+            self.view.hideSemino()
+
         self.fc.updateConfig(path=self.view.dev.getPath(), pictureTime=self.view.dev.getPictureTime())
         self.jm.writeJsonFile()
         self.updateScreen()
@@ -166,11 +178,15 @@ class Controller(object):
         self.view.messageVisibility()
 
     def lastUpdate(self):
+        Log.l(inspect.currentframe(), "Update date time: " + str(dateutil.utils.today().strftime("%d.%m.%Y")))
         self.fc.lastUpdate = str(dateutil.utils.today().strftime("%d.%m.%Y"))
         self.view.lastDate.setText("Aktueller Stand:   " + self.fc.lastUpdate)
 
     def imageCounter(self):
-        pic = self.pictureManager.counter
-        if pic == 0:
-            pic = len(self.pictureManager.images)
-        self.view.imgCount.setText(str(pic) + " / " + str(len(self.pictureManager.images)))
+        if len(self.pictureManager.images) == 0:
+            self.view.imgCount.setText("0 / 0")
+        else:
+            pic = self.pictureManager.counter
+            if pic == 0:
+                pic = len(self.pictureManager.images)
+            self.view.imgCount.setText(str(pic) + " / " + str(len(self.pictureManager.images)))
