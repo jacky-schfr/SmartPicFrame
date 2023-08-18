@@ -30,7 +30,7 @@ class FrameConfig(object):
         Directory config
         '''
         if platform.system() == "Windows":
-            picturePath = r"C:/Users/marce/Cookies/Desktop/DropboxDB/Dropbox/Synchronisierter Ordner/"  # Windows path
+            picturePath = r"C:/Users/marce/Desktop/Synchronisierter Ordner/"  # Windows path
         else:
             picturePath = "/home/jacky/Dropbox/Synchronisierter Ordner/"  # Linux path
         self.path = picturePath

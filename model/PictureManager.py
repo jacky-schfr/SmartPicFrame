@@ -4,6 +4,9 @@ import os
 from model.FrameConfig import FrameConfig
 from model.Picture import Picture
 
+from PIL import Image
+from PIL.ExifTags import TAGS
+
 from utils import Log
 
 
@@ -24,8 +27,21 @@ class PictureManager:
         if os.path.exists(self.fc.path) and len(os.listdir(self.fc.path)) > 0:
             Log.l(inspect.currentframe(), "pictures in dir.: " + str(len(os.listdir(self.fc.path))))
             for file in os.listdir(self.fc.path):
-                img = Picture(file)
+                # Image-Meta-Data
+                image = Image.open(self.fc.path + file)
+                exif_data = image.getexif()
+                data = 1
+                for tag_id in exif_data:
+                    tag = TAGS.get(tag_id, tag_id)
+                    data = exif_data.get(tag_id)
+                    if isinstance(data, bytes):
+                        data = data.decode()
+                    if tag == "Orientation":
+                        print(f"{tag:25}: {data}")
+
+                img = Picture(file, data)
                 tempImages.append(img)
+
         return tempImages
 
     def setCounterValue(self, direction="default"):

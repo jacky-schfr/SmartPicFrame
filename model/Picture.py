@@ -4,8 +4,9 @@ from utils import Log
 
 
 class Picture(object):
-    def __init__(self, file):
+    def __init__(self, file, orientation):
         self.file = file
+        self.orientation = orientation
         self.message = ""
         self.readMessage()
 
