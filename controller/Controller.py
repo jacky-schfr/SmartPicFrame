@@ -2,7 +2,7 @@ import inspect
 
 import dateutil.utils
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QTransform
 
 from model.FrameConfig import FrameConfig
 from model.JsonManager import JsonManager
@@ -94,8 +94,22 @@ class Controller(object):
     def setImage(self, image):
         Log.l(inspect.currentframe(), "setImage")
         self.view.messageVisibility()
-        bgPix= QPixmap(image).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatioByExpanding)
-        resizedPix = QPixmap(image).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
+        bgPix = QPixmap(image.file).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatioByExpanding)
+        resizedPix = QPixmap(image.file).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
+
+        # Rotate and transform image
+        transform = QTransform().rotate(0)
+        if image.orientation == 3:
+            transform = QTransform().rotate(180)
+        elif image.orientation == 6:
+            transform = QTransform().rotate(90)
+            bgPix.scaled(self.fc.height, self.fc.width, Qt.KeepAspectRatioByExpanding)
+        elif image.orientation == 8:
+            transform = QTransform().rotate(-90)
+            bgPix.scaled(self.fc.height, self.fc.width, Qt.KeepAspectRatioByExpanding)
+
+        bgPix = bgPix.transformed(transform)
+        resizedPix = resizedPix.transformed(transform)
 
         self.view.image.setPixmap(resizedPix)
         self.view.bgImage.setPixmap(bgPix)
