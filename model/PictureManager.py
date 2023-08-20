@@ -4,6 +4,9 @@ import os
 from model.FrameConfig import FrameConfig
 from model.Picture import Picture
 
+from PIL import Image
+from PIL.ExifTags import TAGS
+
 from utils import Log
 
 
@@ -24,8 +27,22 @@ class PictureManager:
         if os.path.exists(self.fc.path) and len(os.listdir(self.fc.path)) > 0:
             Log.l(inspect.currentframe(), "pictures in dir.: " + str(len(os.listdir(self.fc.path))))
             for file in os.listdir(self.fc.path):
-                img = Picture(file)
+                # Image-Meta-Data
+                image = Image.open(self.fc.path + file)
+                exif_data = image.getexif()
+                orientation = 1
+                for tag_id in exif_data:
+                    tag = TAGS.get(tag_id, tag_id)
+                    data = exif_data.get(tag_id)
+                    if isinstance(data, bytes):
+                        data = data.decode()
+                    if tag == "Orientation":
+                        orientation = data
+                        print(f"{tag:25}: {data}")
+
+                img = Picture(self.fc.path + file, orientation)
                 tempImages.append(img)
+
         return tempImages
 
     def setCounterValue(self, direction="default"):
@@ -44,10 +61,10 @@ class PictureManager:
 
     def getImageFromList(self):
         if len(self.images) == 0:
-            return 'defaultImage/defaultImg.png'
+            return Picture('defaultImage/defaultImg.png', 1)
         else:
-            temp = self.images[self.counter]
-            return self.fc.path + temp.file
+            picture = self.images[self.counter]
+            return picture
 
     def getImage(self, direction):
         Log.l(inspect.currentframe(), "getImage")
@@ -57,14 +74,13 @@ class PictureManager:
 
         img = self.getImageFromList()
 
-        # Check if picture exists
-        if not os.path.exists(img):
+        if not os.path.exists(img.file):
             Log.d(inspect.currentframe(), "Picture not exist, reload images")
             self.setCounterValue()
             self.updateImageList()
             img = self.getImageFromList()
 
-        Log.d(inspect.currentframe(), "image: " + str(img))
+        Log.d(inspect.currentframe(), "image: " + str(img.file))
         return img
 
     def checkListUpdate(self):
