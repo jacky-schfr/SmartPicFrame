@@ -65,8 +65,5 @@ class FrameConfig(object):
         else:
             self.isFullScreen = False
 
-    def toggleSeminoMode(self, state):
-        if state:
-            self.isSemino = True
-        else:
-            self.isSemino = False
+    def toggleSeminoMode(self):
+        self.isSemino = not self.isSemino
