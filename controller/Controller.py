@@ -51,6 +51,7 @@ class Controller(object):
 
         self.view.messageBtn.btn.clicked.connect(self.toggleMessage)
         self.view.messageOpen.btn.clicked.connect(self.toggleMessage)
+        self.view.seminoBtn.btn.clicked.connect(self.seminoButtonClicked)
 
         self.view.arrowBtn.btn.clicked.connect(self.startTouchTimer)
         self.view.arrowBtnL.btn.clicked.connect(self.startTouchTimer)
@@ -67,6 +68,14 @@ class Controller(object):
 
         self.view.touchVisibility()
         self.updateScreen()
+
+    def seminoButtonClicked(self, event):
+        Log.l(inspect.currentframe(), "seminoButtonClicked")
+        self.fc.toggleSeminoMode()
+        if not self.fc.isSemino:
+            self.view.hideSemino()
+        else:
+            self.view.showSemino()
 
     def nextPicture(self, event):
         Log.l(inspect.currentframe(), "nextPicture")
@@ -123,6 +132,7 @@ class Controller(object):
             self.view.messageBtn.btn.hide()
             self.view.messageOpen.btn.hide()
             self.view.msg.hide()
+            self.view.seminoBtn.btn.hide()
             self.view.seminoImage.hide()
         else:
             self.view.msg.setText(message)
@@ -179,10 +189,6 @@ class Controller(object):
     def updateSettings(self, event):
         self.view.hideDevMode()
         self.fc.toggleFullScreen(self.view.dev.btnFullScreen.isChecked())
-        self.fc.toggleSeminoMode(self.view.dev.btnSemino.isChecked())
-        if not self.fc.isSemino:
-            self.view.hideSemino()
-
         self.fc.updateConfig(path=self.view.dev.getPath(), pictureTime=self.view.dev.getPictureTime())
         self.jm.writeJsonFile()
         self.updateScreen()

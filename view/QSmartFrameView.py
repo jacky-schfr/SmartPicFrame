@@ -48,6 +48,7 @@ class QSmartFrameView(QMainWindow):
                                "border-radius: 10px;")
         self.msg.setAlignment(Qt.AlignLeft)
         self.msg.setWordWrap(True)
+        self.msg.setContentsMargins(20, 10, 10, 10)
 
         '''
         Semino
@@ -107,6 +108,7 @@ class QSmartFrameView(QMainWindow):
         self.messageOpen = TransparentButton(self, 'graphics/messageOpen.png')
         self.messageOpen.btn.setIconSize(QSize(200, 200))
         self.messageBtn.btn.hide()
+        self.seminoBtn = TransparentButton(self, 'graphics/pauseBtn.png')
 
         '''
         QDevelopView
@@ -127,10 +129,8 @@ class QSmartFrameView(QMainWindow):
 
         self.arrowBtn.btn.move(self.fc.width - 200, int(self.fc.height / 2) - 100)
         self.arrowBtnL.btn.move(50, int(self.fc.height / 2) - 100)
-        self.pauseBtn.btn.move(int(self.fc.width / 2) - int(self.pauseBtn.btn.width() / 2),
-                               int(self.fc.height / 2) - 100)
-        self.playBtn.btn.move(int(self.fc.width / 2) - int(self.playBtn.btn.width() / 2) + 10,
-                              int(self.fc.height / 2) - 100)
+        self.pauseBtn.btn.move(int(self.fc.width / 2) - int(self.pauseBtn.btn.width() / 2), int(self.fc.height / 2) - 100)
+        self.playBtn.btn.move(int(self.fc.width / 2) - int(self.playBtn.btn.width() / 2) + 10, int(self.fc.height / 2) - 100)
         self.messageBtn.btn.move(self.fc.width - 200, self.fc.height - 175)
         self.messageOpen.btn.move(self.fc.width - 200, self.fc.height - 200)
         self.lastDate.move(self.fc.width - 500, 20)
@@ -152,6 +152,9 @@ class QSmartFrameView(QMainWindow):
 
     def hideSemino(self):
         self.seminoImage.hide()
+
+    def showSemino(self):
+        self.seminoImage.show()
 
     def touchVisibility(self):
         if not self.fc.isTouch:
@@ -176,17 +179,20 @@ class QSmartFrameView(QMainWindow):
             self.messageBtn.btn.hide()
             self.messageOpen.btn.show()
             self.msg.show()
+            self.seminoBtn.btn.show()
             if self.fc.isSemino:
                 self.seminoImage.show()
         else:
             self.messageBtn.btn.show()
             self.messageOpen.btn.hide()
             self.msg.hide()
+            self.seminoBtn.btn.hide()
             self.seminoImage.hide()
 
     def messageMove(self):
         self.msg.move(int(self.fc.width / 2 - self.msg.width() / 2), int(self.fc.height - self.fc.msgHeight - 50))
         self.seminoImage.move(self.msg.x() - self.seminoPixmap.width() + 75, self.fc.height - self.seminoPixmap.height())
+        self.seminoBtn.btn.move(self.msg.x() - self.seminoBtn.btn.width() + 75, self.fc.height - 175)
 
     def keyPressEvent(self, event):
         if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Escape:

@@ -56,14 +56,6 @@ class QDevelopView:
         self.durationUnit.setGraphicsEffect(getColorEffect())
         self.durationUnit.setFont(QFont('Arial', 12))
 
-        self.seminoName = QLabel(self.frame)
-        self.seminoName.setText("Semino-Modus:")
-        self.seminoName.setGraphicsEffect(getColorEffect())
-        self.seminoName.setFont(QFont('Arial', 12))
-        self.btnSemino = QPushButton(self.frame)
-        self.btnSemino.setCheckable(True)
-        self.btnSemino.clicked.connect(self.__toggleBtnSemino)
-
         self.fullScreenName = QLabel(self.frame)
         self.fullScreenName.setText("Vollbild:")
         self.fullScreenName.setGraphicsEffect(getColorEffect())
@@ -76,7 +68,6 @@ class QDevelopView:
         self.btnClose.setText("Speichern/Schließen")
 
         self.__toggleBtnFullScreen()
-        self.__toggleBtnSemino()
         self.setPosition()
         self.setValues()
 
@@ -96,9 +87,6 @@ class QDevelopView:
         self.durationLine.move(250, self.guideLine1 + 30)
         self.durationUnit.move(460, self.guideLine1 + 30)
 
-        self.seminoName.move(20, self.guideLine1 + 100)
-        self.btnSemino.move(250, self.guideLine1 + 100)
-
         self.fullScreenName.move(20, self.guideLine1 + 130)
         self.btnFullScreen.move(250, self.guideLine1 + 130)
 
@@ -110,7 +98,6 @@ class QDevelopView:
         self.btnFullScreen.setChecked(self.fc.isFullScreen)
 
         self.__toggleBtnFullScreen()
-        self.__toggleBtnSemino()
 
     def getPath(self):
         return self.pathLine.text()
@@ -123,12 +110,6 @@ class QDevelopView:
             self.btnFullScreen.setText("An")
         else:
             self.btnFullScreen.setText("Aus")
-
-    def __toggleBtnSemino(self):
-        if self.btnSemino.isChecked():
-            self.btnSemino.setText("An")
-        else:
-            self.btnSemino.setText("Aus")
 
     def __getRelativePos(self, percent):
         return (self.fc.height - self.offset * 2) / 100 * percent
