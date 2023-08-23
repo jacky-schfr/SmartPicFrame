@@ -108,7 +108,7 @@ class QSmartFrameView(QMainWindow):
         self.messageOpen = TransparentButton(self, 'graphics/messageOpen.png')
         self.messageOpen.btn.setIconSize(QSize(200, 200))
         self.messageBtn.btn.hide()
-        self.seminoBtn = TransparentButton(self, 'graphics/pauseBtn.png')
+        self.seminoBtn = TransparentButton(self, 'graphics/seminoBtn.png')
 
         '''
         QDevelopView
@@ -192,7 +192,7 @@ class QSmartFrameView(QMainWindow):
     def messageMove(self):
         self.msg.move(int(self.fc.width / 2 - self.msg.width() / 2), int(self.fc.height - self.fc.msgHeight - 50))
         self.seminoImage.move(self.msg.x() - self.seminoPixmap.width() + 75, self.fc.height - self.seminoPixmap.height())
-        self.seminoBtn.btn.move(self.msg.x() - self.seminoBtn.btn.width() + 75, self.fc.height - 175)
+        self.seminoBtn.btn.move(self.msg.x() - self.seminoBtn.btn.width() + 65, self.fc.height - 145)
 
     def keyPressEvent(self, event):
         if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Escape:
