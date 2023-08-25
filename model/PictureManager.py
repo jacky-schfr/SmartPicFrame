@@ -56,6 +56,8 @@ class PictureManager:
                 self.counter -= 1
             else:
                 self.counter = len(self.images) - 1
+        elif direction == "c":
+            self.counter = self.counter
         elif direction == "default":
             self.counter = 1
 
