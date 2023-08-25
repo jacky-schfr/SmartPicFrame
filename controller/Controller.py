@@ -87,6 +87,9 @@ class Controller(object):
     def backwardImage(self, event):
         self.setImage(self.pictureManager.getImage("l"))
 
+    def leaveImage(self, event):
+        self.setImage(self.pictureManager.getImage("c"))
+
     def pauseImage(self, event):
         self.fc.pause = not self.fc.pause
 
@@ -154,6 +157,7 @@ class Controller(object):
         self.view.dev.setPosition()
         self.view.setPosition()
         self.view.messageMove()
+        self.leaveImage(self)
 
     def updateListCallback(self):
         Log.d(inspect.currentframe(), "updateListCallback")
@@ -191,6 +195,8 @@ class Controller(object):
         self.fc.toggleFullScreen(self.view.dev.btnFullScreen.isChecked())
         self.fc.updateConfig(path=self.view.dev.getPath(), pictureTime=self.view.dev.getPictureTime())
         self.jm.writeJsonFile()
+        self.pictureTimer.quitLoopTimer()
+        self.startPictureTimer()
         self.updateScreen()
 
     def toggleMessage(self, event):
