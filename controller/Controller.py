@@ -115,16 +115,15 @@ class Controller(object):
             transform = QTransform().rotate(180)
         elif image.orientation == 6:
             transform = QTransform().rotate(90)
-            bgPix.scaled(self.fc.height, self.fc.width, Qt.KeepAspectRatioByExpanding)
         elif image.orientation == 8:
             transform = QTransform().rotate(-90)
-            bgPix.scaled(self.fc.height, self.fc.width, Qt.KeepAspectRatioByExpanding)
 
-        bgPix = bgPix.transformed(transform)
-        resizedPix = resizedPix.transformed(transform)
+        bgPix = bgPix.transformed(transform).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatioByExpanding)
+        resizedPix = resizedPix.transformed(transform).scaled(self.fc.width, self.fc.height, Qt.KeepAspectRatio)
 
         self.view.image.setPixmap(resizedPix)
         self.view.bgImage.setPixmap(bgPix)
+
         if len(self.pictureManager.images) > 0:
             message = self.pictureManager.images[self.pictureManager.counter].message
         else:
